@@ -1,0 +1,9 @@
+<div class="calendar" *ngIf="month || days">
+  <div class="month"><h1>{{ month.name }} {{ month.year }}</h1></div>
+  <div class="days">
+    <div *ngFor="let day of month.days" class="day" [class.disabled]="day.month != month.id">
+      <div class="name">{{ day.name | day:this.ws.mobile }}</div>
+      <div class="date">{{ day.day }}<div>
+    </div>
+  </div>
+</div>

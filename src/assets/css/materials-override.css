@@ -1,0 +1,39 @@
+form {
+  padding: 25px 0;
+}
+
+.form-section {
+  margin: 25px 0;
+}
+
+/* class repeated for increased specificity */
+.mat-grid-tile .mat-form-field.mat-form-field {
+  width: 90%;
+  margin: 0 5%;
+}
+
+/* mat-error has issues https://github.com/angular/material2/issues/9007 */
+mat-form-field + mat-error {
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  font-size: 75%;
+  font-weight: 700;
+}
+
+.error mat-form-field.mat-form-field .mat-form-field-flex {
+  background-color: #f7f7f9;
+}
+
+/* Force remove content area for stepper */
+.mat-horizontal-content-container {
+  display: none;
+}
+
+.mat-step-label {
+  min-width: initial !important;
+}
+
+.mat-horizontal-stepper-header-container {
+  background-color: #e3f2fd;
+}

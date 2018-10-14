@@ -1,0 +1,18 @@
+<div class="time-login">
+  <img src="../../assets/img/time-cogs.svg" align="center" (click)="testLogin()">
+  <form [formGroup]="loginForm" autocomplete="off" (submit)="login()">
+    <div class="time-form-row">
+      <mat-form-field>
+        <input matInput formControlName="user" placeholder="User Id">
+      </mat-form-field>
+    </div>
+    <div class="time-form-row">
+      <mat-form-field>
+        <input matInput formControlName="lastname" placeholder="Last Name">
+      </mat-form-field>
+    </div>
+    <div class="time-form-submit">
+      <button mat-raised-button type="submit" color="primary" [disabled]="!loginForm.valid">Login</button>
+    </div>
+  </form>
+</div>

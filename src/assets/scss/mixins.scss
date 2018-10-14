@@ -1,0 +1,55 @@
+@mixin z($property) {
+    transform: translateZ($property);
+    z-index: $property;
+}
+
+@mixin padding-default {
+  padding: .75rem 1.5rem;
+}
+
+@mixin padding-square {
+  padding: .75rem;
+}
+
+@mixin padding-compact {
+  padding: .5rem 1rem;
+}
+
+@mixin padding-compact-square {
+  padding: .5rem;
+}
+
+@mixin padding-day {
+  padding: 2rem .5rem ;
+}
+
+@mixin padding-day-compact {
+  padding: .1rem .25rem ;
+}
+
+@mixin block-default {
+  display: block;
+}
+
+@mixin button {
+  background: $border;
+  border-radius: .25rem;
+  display: inline-block;
+  @extend padding-default;
+  text-align: center;
+}
+
+@mixin buton-primary {
+  background: $primary;
+  color: $white;
+}
+
+@mixin buton-secondary {
+  background: $tertiary;
+  color: $white;
+}
+
+@mixin buton-hover {
+  background: $border;
+  color: $secondary;
+}

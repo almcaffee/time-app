@@ -1,0 +1,31 @@
+<div class="time-navigation">
+  <div *ngIf="ws.mobile && profile" class="time-navigation-menu" (click)="toggleMenu()">
+    <button>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+  <div class="time-dev-logo">
+    <img src="../../assets/img/logo-dev-black.png">
+  </div>
+  <div *ngIf="!ws.mobile && profile" class="time-navigation-links">
+    <ul>
+      <li [routerLink]="['/profile']"><span>Profile</span></li>
+      <li [routerLink]="['/report']"><span>Report</span></li>
+      <li [routerLink]="['/calendar']"><span>Calendar</span></li>
+    </ul>
+  </div>
+  <div *ngIf="profile" class="time-navigation-logout">
+    <button>
+      <mat-icon>person</mat-icon> {{  profile.displayname || 'User' }}
+    </button>
+  </div>
+  <div *ngIf="ws.mobile && menuOpen" class="time-navigation-mobile-menu">
+    <div class="time-navigation-links">
+      <ul>
+        <li [routerLink]="['/profile']"><span>Profile</span></li>
+        <li [routerLink]="['/report']"><span>Report</span></li>
+        <li [routerLink]="['/calendar']"><span>Calendar</span></li>
+      </ul>
+    </div>
+  </div>
+</div>

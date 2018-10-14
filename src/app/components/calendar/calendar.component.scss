@@ -1,0 +1,92 @@
+@import '../../../assets/scss/variables.scss';
+@import '../../../assets/scss/mixins.scss';
+
+
+@media screen and (max-width: 786px) {
+  .date {
+    font-size: 1rem;
+    padding: .5rem;
+  }
+  .name {
+    font-size: .75rem;
+  }
+}
+
+@media screen and (min-width: 787px) and (max-width: 1024px) {
+  .date {
+    font-size: 1.5rem;
+    @include padding-day-compact;
+  }
+  .name {
+    font-size: .75rem;
+    @include padding-compact;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .date {
+    font-size: 2rem;
+    @include padding-day;
+  }
+  .name {
+    @include padding-compact;
+  }
+}
+
+.calendar {
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  .month {
+    flex: 100%;
+    @include padding-default;
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  }
+  .days {
+    width: 1024px;
+    max-width: 80vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .day {
+      flex: 13.5%;
+      border: 1px solid transparent;
+      text-align: center;
+      .name {
+        background: $tertiary;
+      }
+      .date {
+        min-height: 5%;
+      }
+      &:hover {
+        border-color: $primary;
+        cursor: pointer;
+        .name {
+          color: $white;
+          background: $primary;
+        }
+      }
+      &.disabled {
+        border-color: #e6e6e6;
+        opacity: 0.6;
+        cursor: default;
+        .name, .date {
+          color: initial;
+        }
+        .name {
+          background: $tertiary;
+          color: initial;
+        }
+        .date {
+          background: $offWhite;
+        }
+      }
+    }
+  }
+
+}
