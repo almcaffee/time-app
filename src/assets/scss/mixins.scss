@@ -39,17 +39,21 @@
   text-align: center;
 }
 
-@mixin buton-primary {
+@mixin button-primary {
   background: $primary;
   color: $white;
 }
 
-@mixin buton-secondary {
+@mixin button-secondary {
   background: $tertiary;
   color: $white;
 }
 
-@mixin buton-hover {
+@mixin button-hover {
   background: $border;
   color: $secondary;
+}
+
+@mixin pointer {
+	cursor: pointer;
 }

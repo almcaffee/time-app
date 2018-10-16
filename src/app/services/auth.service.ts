@@ -4,6 +4,7 @@ import { LoginCredentials, Profile } from '../models';
 import { Router } from '@angular/router';
 import { Observable, Subscription, Subject } from 'rxjs';
 import * as crypto from 'crypto-js';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
   authSub = new Subject<Profile>();
   authSub$ = this.authSub.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private rt: Router) {}
 
   canActivate(): boolean {
     return !!localStorage.getItem('usr');
@@ -30,14 +31,14 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials, redirect?: string) {
+    if(redirect) console.log(redirect)
     this.http.get<Profile>(this.API_URL+'login/user/'+credentials.user+'/lastname/'+credentials.lastname)
     .subscribe(profile=> {
       this.profile = profile;
       this.authSub.next(profile);
       localStorage.setItem('usr', JSON.stringify({ user: profile.employeeid, lastname: profile.lastname}));
       let location = redirect && redirect.length > 1 ? redirect : '/calendar';
-      console.log('Location:' + location)
-      this.router.navigate([location]);
+      this.rt.navigate([location]);
     }, err=> {
       console.log(err);
       this.authSub.next(null);

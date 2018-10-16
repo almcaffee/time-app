@@ -25,6 +25,7 @@ import { MatInputModule,
   MatExpansionModule,
   MatTableModule,
   MatTooltipModule,
+  MatMenuModule
 } from '@angular/material';
 import { MomentDateModule, MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MarkdownModule } from 'ngx-markdown';
@@ -59,6 +60,9 @@ export const AppImports: any[] = [
   MatExpansionModule,
   MatTableModule,
   MatTooltipModule,
+  MatMenuModule,
+  MomentDateModule,
+  MatMomentDateModule,
   RouterModule.forRoot(AppRoutes),
   MarkdownModule.forRoot(),
   RecaptchaModule.forRoot(),

@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Month, Day, Profile } from '@models';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
@@ -19,6 +20,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   timeForm: FormGroup;
   days: Day[];
   month: Month;
+  selectedDate: any;
+  today: any;
   subs: Subscription[];
 
   constructor(private rt: Router,
@@ -29,7 +32,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
     public ws: WindowService) {
     this.profile = this.as.getProfile();
     this.ar.params.subscribe(params => console.log('Got new value for params', params));
-    this.month = this.ds.getMonth(new Date());
+    this.month = this.ds.getCalendarMonth(new Date());
+    this.today = this.ds.today();
+    console.log(this.today)
     console.log(this.month)
   }
 
@@ -42,6 +47,20 @@ export class CalendarComponent implements OnInit, OnDestroy {
   /* Clear memeory of subs on destroy */
   ngOnDestroy() {
     this.subs.forEach(s=> s.unsubscribe());
+  }
+
+  getLastMonth() {
+    let lm = this.month.days[15].moment.subtract(1, 'months');
+    this.month = this.ds.getCalendarMonth(lm.toDate());
+  }
+
+  getNextMonth() {
+    let nm = this.month.days[15].moment.add(1, 'months');
+    this.month = this.ds.getCalendarMonth(nm.toDate());
+  }
+
+  isToday(obj1: any, obj2: any): boolean {
+    return obj1.day === obj2.day && obj1.year === obj2.year && obj1.month === obj2.month;
   }
 
   /* Reactive form */

@@ -8,7 +8,10 @@
       "@components/*": ["src/app/components/*"],
       "@guards/*": ["src/app/guards/*"],
       "@models*": ["src/app/models/"],
-      "@environments/*": ["src/environments/*"]
+      "@environments/*": ["src/environments/*"],
+      "@scss/*": ["src/assets/scss/*"],
+      "@css/*": ["src/assets/css/*"],
+      "@images/*": ["src/assets/images/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

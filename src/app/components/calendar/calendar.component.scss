@@ -14,7 +14,7 @@
 
 @media screen and (min-width: 787px) and (max-width: 1024px) {
   .date {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     @include padding-day-compact;
   }
   .name {
@@ -25,7 +25,7 @@
 
 @media screen and (min-width: 1025px) {
   .date {
-    font-size: 2rem;
+    font-size: 1.5rem;
     @include padding-day;
   }
   .name {
@@ -39,16 +39,32 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  .month {
-    flex: 100%;
-    @include padding-default;
-    h1 {
-      font-size: 1.5rem;
-      text-align: center;
+  max-width: 100%;
+  .mat-card-header {
+    position: relative;
+    .month {
+      flex: 100%;
+      padding-bottom: 1rem;
+      // @include padding-default;
+      h1 {
+        font-size: 1.5rem;
+        text-align: center;
+      }
+      button {
+        position: absolute;
+        @include button-primary;
+        @include pointer;
+      }
+      button:first-of-type {
+        left: 0px;
+      }
+      button:last-of-type {
+        right: 0px;
+      }
     }
   }
   .days {
-    width: 1024px;
+    width: 100%;
     max-width: 80vw;
     display: flex;
     flex-wrap: wrap;
@@ -63,6 +79,7 @@
       .date {
         min-height: 5%;
       }
+      &.today,
       &:hover {
         border-color: $primary;
         cursor: pointer;

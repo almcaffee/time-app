@@ -1,0 +1,57 @@
+@import '../../../assets/scss/variables.scss';
+
+.time-navigation-links {
+  display: block;
+  background: $dark;
+}
+
+.time-navigation-links ul {
+  display: block;
+}
+
+.time-navigation-links ul li {
+  display: block;
+  line-height: 20px;
+  padding: 12px 24px;
+  border-bottom: 1px solid $darkHover;
+  color: $darkText;
+}
+
+.time-navigation-links ul li:hover {
+  background: $darkHover;
+}
+
+.time-navigation-links ul li span {
+  display: inline;
+  font-size: 14px;
+  line-height: 18px;
+  vertical-align: middle;
+  // font-weight: 700;
+}
+
+.time-navigation-links ul li:hover {
+  cursor: pointer;
+}
+
+.time-navigation-links, .time-navigation-logo, .time-navigation-logout {
+  max-height: 35px;
+  overflow: hidden;
+}
+
+.time-navigation-mobile-menu ul,
+.time-navigation-mobile-menu ul li,
+.time-navigation-mobile-menu ul li span {
+  display: block;
+}
+
+.time-navigation-links {
+  display: block;
+  max-height: none;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.time-navigation-mobile-menu ul li {
+  padding: 16px 24px;
+  text-align: left;
+}

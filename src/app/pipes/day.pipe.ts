@@ -6,23 +6,30 @@ import * as moment from 'moment';
 })
 export class DayPipe implements PipeTransform {
 
-  transform(value: any, mobile: boolean): any {
+  transform(value: any, mobile: boolean, momentFormat?: boolean): any {
+    console.log(value)
+    if(momentFormat && moment.isMoment(value)) {
+      return value.format('M/DD/YY');
+    } else if(typeof value === 'string') {
+      let dayRef: any = {
+        Monday: 'Mon',
+        Tuesday: 'Tue',
+        Wednesday: 'Wed',
+        Thursday: 'Thu',
+        Friday: 'Fri',
+        Saturday: 'Sat',
+        Sunday: 'Sun'
+      };
 
-    let dayRef: any = {
-      Monday: 'Mon',
-      Tuesday: 'Tue',
-      Wednesday: 'Wed',
-      Thursday: 'Thu',
-      Friday: 'Fri',
-      Saturday: 'Sat',
-      Sunday: 'Sun'
-    };
-
-    if(mobile) {
-      return dayRef[value];
+      if(mobile) {
+        return dayRef[value];
+      } else {
+        return value;
+      }
     } else {
-      return value;
+      return null;
     }
+
   }
 
 }

@@ -1,9 +1,0 @@
-.app-body {
-  display: inline-block;
-  position: relative;
-  min-height: Calc(100vh - 61px);
-  max-height: Calc(100vh - 61px);
-  width: 100vw;
-  max-width: 100vw;
-  overflow: hidden;
-}

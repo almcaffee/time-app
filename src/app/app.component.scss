@@ -1,0 +1,42 @@
+@import '../assets/scss/variables.scss';
+
+@media screen and (max-width: 952px) {
+  .app-menu {
+    display: none;
+  }
+}
+
+nav {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  height: 57px;
+  border-bottom: 3px solid $darkHover;
+  overflow: hidden;
+}
+
+.app-body {
+  position: absolute;
+  top: 60px;
+  left: 0px;
+  width: 100vw;
+  $h: "Calc(100vh - 60px)";
+  height: #{$h};
+  overflow: hidden;
+  display: flex;
+
+  .app-menu {
+    min-width: 20vw;
+    background: $dark;
+  }
+
+  .app-content {
+    flex: 1 1 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

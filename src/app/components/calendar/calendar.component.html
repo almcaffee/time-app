@@ -1,9 +1,25 @@
 <div class="calendar" *ngIf="month || days">
-  <div class="month"><h1>{{ month.name }} {{ month.year }}</h1></div>
-  <div class="days">
-    <div *ngFor="let day of month.days" class="day" [class.disabled]="day.month != month.id">
-      <div class="name">{{ day.name | day:this.ws.mobile }}</div>
-      <div class="date">{{ day.day }}<div>
-    </div>
-  </div>
+  <mat-card>
+    <mat-card-header>
+      <div class="month">
+        <h1>
+          <button mat-icon-buttom color="primary" (click)="getLastMonth()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          {{ month.name }} {{ month.year }}
+          <button mat-icon-buttom color="primary" (click)="getNextMonth()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </h1>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="days">
+        <div *ngFor="let day of month.days" class="day" [class.today]="isToday(day,today)" [class.disabled]="day.month != month.id">
+          <div class="name">{{ day.name | day:this.ws.mobile }}</div>
+          <div class="date">{{ day.day }}</div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

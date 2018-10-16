@@ -5,27 +5,17 @@
     </button>
   </div>
   <div class="time-dev-logo">
-    <img src="../../assets/img/logo-dev-black.png">
-  </div>
-  <div *ngIf="!ws.mobile && profile" class="time-navigation-links">
-    <ul>
-      <li [routerLink]="['/profile']"><span>Profile</span></li>
-      <li [routerLink]="['/report']"><span>Report</span></li>
-      <li [routerLink]="['/calendar']"><span>Calendar</span></li>
-    </ul>
+    <img src="../../assets/img/logo-dev-low-res.png">
   </div>
   <div *ngIf="profile" class="time-navigation-logout">
-    <button>
-      <mat-icon>person</mat-icon> {{  profile.displayname || 'User' }}
-    </button>
+      <mat-icon>settings</mat-icon>
+      <mat-icon [matMenuTriggerFor]="appMenu" class="btn-hover">arrow_drop_down</mat-icon>
+      <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
+        <button mat-menu-item>Settings</button>
+        <button mat-menu-item>Logout</button>
+      </mat-menu>
   </div>
   <div *ngIf="ws.mobile && menuOpen" class="time-navigation-mobile-menu">
-    <div class="time-navigation-links">
-      <ul>
-        <li [routerLink]="['/profile']"><span>Profile</span></li>
-        <li [routerLink]="['/report']"><span>Report</span></li>
-        <li [routerLink]="['/calendar']"><span>Calendar</span></li>
-      </ul>
-    </div>
+    <app-menu></app-menu>
   </div>
 </div>
