@@ -14,12 +14,24 @@ export class TimeService {
 
   constructor(private http: HttpClient) {}
 
-  getAllTime(employeeId: any): Observable<TimeEntry[]> {
-    return this.http.get<TimeEntry[]>(this.API_URL+'time/id/'+employeeId);
+  getAllTime(id: any): Observable<TimeEntry[]> {
+    return this.http.get<TimeEntry[]>(this.API_URL+'time/id/'+id);
   }
 
-  getTimeByPeriod(id: any, startDate: any, endDate: any): Observable<TimeEntry[]> {
-    let postBody = { id: id, startDate: startDate.format('YYYY-MM-DD'), endDate: endDate.format('YYYY-MM-DD') };
-    return this.http.post<TimeEntry[]>(this.API_URL+'time/period', postBody);
+  getAllTimeByDate(date: string): Observable<TimeEntry[]> {
+    return this.http.get<TimeEntry[]>(this.API_URL+'time/date/all/'+date);
   }
+
+  getAllTimeByPeriod(startDate: string, endDate: string): Observable<TimeEntry[]> {
+    return this.http.get<TimeEntry[]>(this.API_URL+'time/period/start/'+startDate+'/end/'+endDate);
+  }
+
+  getTimeByDate(id: any, date: string): Observable<TimeEntry[]> {
+    return this.http.get<TimeEntry[]>(this.API_URL+'time/id/'+id+'/date/'+date);
+  }
+
+  getTimeByPeriod(id: any, startDate: string, endDate: string): Observable<TimeEntry[]> {
+    return this.http.get<TimeEntry[]>(this.API_URL+'time/id/'+id+'/start/'+startDate+'/end/'+endDate);
+  }
+
 }

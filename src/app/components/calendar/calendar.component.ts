@@ -32,7 +32,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     public ws: WindowService) {
     this.profile = this.as.getProfile();
     this.ar.params.subscribe(params => console.log('Got new value for params', params));
-    this.month = this.ds.getCalendarMonth(new Date());
+    this.getThisMonth();
     this.today = this.ds.today();
     console.log(this.today)
     console.log(this.month)
@@ -59,8 +59,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.month = this.ds.getCalendarMonth(nm.toDate());
   }
 
+  getThisMonth() {
+    this.month = this.ds.getCalendarMonth(new Date());
+  }
+
   isToday(obj1: any, obj2: any): boolean {
     return obj1.day === obj2.day && obj1.year === obj2.year && obj1.month === obj2.month;
+  }
+
+  isThisMonth(): boolean {
+    return this.month === this.ds.getCalendarMonth(new Date());
   }
 
   /* Reactive form */

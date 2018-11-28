@@ -15,7 +15,7 @@
 @media screen and (min-width: 787px) and (max-width: 1024px) {
   .date {
     font-size: 1.25rem;
-    @include padding-day-compact;
+    @include padding-day-compact-sq;
   }
   .name {
     font-size: .75rem;
@@ -105,5 +105,4 @@
       }
     }
   }
-
 }

@@ -19,12 +19,20 @@
   padding: .5rem;
 }
 
+@mixin padding-compact-square-md {
+  padding: 1rem;
+}
+
 @mixin padding-day {
   padding: 2rem .5rem ;
 }
 
 @mixin padding-day-compact {
   padding: .1rem .25rem ;
+}
+
+@mixin padding-day-compact-sq {
+  padding: .25rem ;
 }
 
 @mixin block-default {

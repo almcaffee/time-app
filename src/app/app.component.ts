@@ -24,7 +24,10 @@ export class AppComponent {
     if(!!localStorage.getItem('usr') && !this.auth.isLoggedIn() && this.rt.url.length > 0) {
       let prvRt = localStorage.getItem('prvRt');
       this.auth.login(JSON.parse(localStorage.getItem('usr')), prvRt);
-    } else { localStorage.clear() }
+      this._auth = true;
+    } else {
+      localStorage.clear();
+    }
   }
 
 

@@ -16,4 +16,5 @@ export interface Profile {
   profile?: string;
   contacts?: string[];
   sex?: string;
+  role?: string;
 }

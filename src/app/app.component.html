@@ -4,7 +4,7 @@
   <app-navigation></app-navigation>
 </nav>
 <div class="app-body">
-  <div class="app-menu">
+  <div *ngIf="_auth" class="app-menu">
     <app-menu></app-menu>
   </div>
   <div class="app-content">

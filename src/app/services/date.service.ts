@@ -30,8 +30,12 @@ export class DateService {
   }
 
   getTimeByPeriod(start: any, end: any) {
-    this.subs.push(this.ts.getTimeByPeriod(this.as.getProfile().employeeid, start, end)
-    .subscribe(res=> { this.time = res; console.log(this.time) }, err=> { console.log(err); this.time =[] }));
+    if(this.as.getProfile()) {
+      this.subs.push(this.ts.getTimeByPeriod(this.as.getProfile().employeeid, start, end)
+      .subscribe(res=> { this.time = res; console.log(this.time) }, err=> { console.log(err); this.time =[] }));
+    } else {
+      this.time =[]
+    }
   }
 
   getWeeks(startDate: any, numWeeks?: number): Day[] {
