@@ -1,4 +1,4 @@
-export { Day, TimeEntry } from './day';
+export { Day } from './day';
 export { DateSelection } from './date-selection';
 export { ErrorResponse } from './errorResponse';
 export { LoginCredentials } from './loginCredentials';
@@ -6,5 +6,6 @@ export { Month } from './month';
 export { Period } from './period';
 export { Profile } from './profile';
 export { TimeCode } from './time-code';
+export { TimeEntry } from './time-entry';
 export { Week } from './week';
 export { WorkDay } from './workDay';

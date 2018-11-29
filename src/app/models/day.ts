@@ -1,3 +1,5 @@
+import { TimeEntry } from './time-entry';
+
 export interface Day {
   id?: number;
   month?: number;
@@ -8,11 +10,4 @@ export interface Day {
   time?: TimeEntry;
   totalTime?: number;
   edit?: boolean;
-}
-
-export interface TimeEntry {
-  id?: string;
-  date?: Date;
-  code?: string;
-  hours?: number;
 }
