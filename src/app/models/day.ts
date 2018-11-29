@@ -5,8 +5,9 @@ export interface Day {
   day?: number;
   moment?: any;
   year?: number;
-  time?: TimeEntry[];
-  totaltime?: number;
+  time?: TimeEntry;
+  totalTime?: number;
+  edit?: boolean;
 }
 
 export interface TimeEntry {

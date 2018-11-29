@@ -7,7 +7,7 @@ import * as moment from 'moment';
 export class DayPipe implements PipeTransform {
 
   transform(value: any, mobile: boolean, momentFormat?: boolean): any {
-    console.log(value)
+    // console.log(value)
     if(momentFormat && moment.isMoment(value)) {
       return value.format('M/DD/YY');
     } else if(typeof value === 'string') {

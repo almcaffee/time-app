@@ -3,6 +3,7 @@
 @import 'assets/css/materials-override.css';
 @import 'assets/scss/variables.scss';
 @import 'assets/scss/mixins.scss';
+@import 'assets/scss/common.scss';
 
 html {
 	height: 100%;
@@ -28,14 +29,4 @@ app-report, app-profile, app-calendar {
 	padding: 1rem;
 	display: flex;
 	justify-content: space-around;
-}
-app-table {
-	width: 100%;
-	display: block;
-}
-.mat-card-title .mat-icon {
-	color: $blue;
-}
-.btn-hover:hover {
-	cursor: pointer;
 }

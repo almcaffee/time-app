@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Profile, TimeEntry } from '@models';
+import { Profile, TimeEntry, TimeCode } from '@models';
 import { Observable, Subscription, Subject, of } from 'rxjs';
 import * as moment from 'moment';
 import { filter, map } from 'rxjs/operators';
@@ -32,6 +32,10 @@ export class TimeService {
 
   getTimeByPeriod(id: any, startDate: string, endDate: string): Observable<TimeEntry[]> {
     return this.http.get<TimeEntry[]>(this.API_URL+'time/id/'+id+'/start/'+startDate+'/end/'+endDate);
+  }
+
+  getTimeCodes(): Observable<TimeCode[]> {
+    return this.http.get<TimeCode[]>(this.API_URL+'time/codes');
   }
 
 }

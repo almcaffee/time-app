@@ -28,7 +28,12 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     public ws: WindowService) {
     this.subs = [];
     this.profile = this.as.getProfile();
-    if(!this.profile) { this.as.authSub$.subscribe(profile=> { this.profile = profile; this.getTime() }) } else { this.getTime() }
+    if(!this.profile) {
+      this.as.authSub$.subscribe(profile=> {
+        this.profile = profile;
+        this.getTime();
+      });
+    }
   }
 
   ngOnInit() {
@@ -71,7 +76,6 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getTimeByPeriod() {
-    console.log('get time by period')
     this.subs.push(this.ts.getTimeByPeriod(this.profile.id, this.reportForm.controls['startDate'].value, this.reportForm.controls['endDate'].value)
     .subscribe(res=> {console.log(res)}, err=> { console.log(err)}));
   }

@@ -62,3 +62,7 @@ mat-form-field + mat-error {
 .mat-footer-row td {
   border-bottom: 0px !important;
 }
+
+th.mat-header-cell, td.mat-cell {
+  padding: 0 8px !important;
+}

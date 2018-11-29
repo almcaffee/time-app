@@ -4,7 +4,7 @@ import { DateService }  from '@services/date.service';
 import { AuthService }  from '@services/auth.service';
 import { WindowService } from '@services/window.service';
 import { Observable, Subscription, timer } from 'rxjs';
-import { Month, Day, Profile } from '@models';
+import { Month, Day, Profile, TimeCode } from '@models';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
@@ -27,6 +27,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
 
   profile: Profile;
   timeForm: FormGroup;
+  codes: TimeCode[];
   days: Day[];
   month: Month;
   subs: Subscription[];
@@ -40,8 +41,10 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
     private as: AuthService,
     public ws: WindowService,
     private cdr: ChangeDetectorRef) {
+    this.codes = [];
     this.subs = [];
     this.profile = this.as.getProfile();
+    this.getTimeCodes();
     if(!this.profile) { this.as.authSub$.subscribe(profile=> this.profile = profile) }
   }
 
@@ -92,6 +95,11 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
          this.dataSource.paginator = this.paginator;
       });
      }
+  }
+
+  getTimeCodes() {
+    this.subs.push(this.ts.getTimeCodes()
+    .subscribe(codes=> { this.codes = codes }, err => { console.log(err) }));
   }
 
   /** Gets the total cost of all transactions. */

@@ -5,5 +5,6 @@ export { LoginCredentials } from './loginCredentials';
 export { Month } from './month';
 export { Period } from './period';
 export { Profile } from './profile';
+export { TimeCode } from './time-code';
 export { Week } from './week';
 export { WorkDay } from './workDay';
