@@ -63,6 +63,6 @@ mat-form-field + mat-error {
   border-bottom: 0px !important;
 }
 
-th.mat-header-cell, td.mat-cell {
+th.mat-header-cell, td.mat-footer-cell, td.mat-cell {
   padding: 0 8px !important;
 }

@@ -35,6 +35,9 @@ app-table {
 .mat-cell.mat-column-actions button.delete:hover {
   color: rgba(82,89,90,1);
 }
+.mat-cell.mat-column-actions button:disabled {
+  color: #ccc !important;
+}
 table tr:nth-of-type(even) {
   background: #f8f8f8;
 }
