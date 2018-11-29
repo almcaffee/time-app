@@ -61,7 +61,9 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
   ngOnChanges(changes: SimpleChanges) {
     console.log('changes')
     if(changes['startDate'] || changes['endDate']) {
-      this.getPeriod(this.startDate, this.endDate);
+      if(this.startDate && this.endDate) {
+        this.getPeriod(this.startDate, this.endDate);
+      }
     }
     if(changes['actions']) {
       if(changes['actions'].currentValue) {
