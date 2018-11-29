@@ -61,6 +61,10 @@
       button:last-of-type {
         right: 0px;
       }
+      .mat-icon.this-month {
+        color: #52595a;
+        @include pointer;
+      }
     }
   }
   .days {
@@ -105,4 +109,11 @@
       }
     }
   }
+}
+
+.hidden {
+  display: inline;
+  border: 0px !important;
+  width: 1px !important;
+  height: inherit !important;
 }

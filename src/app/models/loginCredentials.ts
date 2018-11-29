@@ -1,4 +1,4 @@
 export interface LoginCredentials {
-  user: string;
-  lastname: string;
+  id: string;
+  lastName: string;
 }

@@ -31,13 +31,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   setupForm() {
     this.loginForm = new FormGroup({
-      user: new FormControl(null, Validators.required),
-      lastname: new FormControl(null, Validators.required)
+      id: new FormControl(null, Validators.required),
+      lastName: new FormControl(null, Validators.required)
     });
   }
 
   testLogin() {
-    this.loginForm.patchValue({ user: '00001', lastname: 'Tinsley' });
+    this.loginForm.patchValue({ id: '1', lastName: 'Tinsley' });
     this.login();
   }
 

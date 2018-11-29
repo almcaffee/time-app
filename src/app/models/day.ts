@@ -10,7 +10,7 @@ export interface Day {
 }
 
 export interface TimeEntry {
-  timesheetid?: string;
+  id?: string;
   date?: Date;
   code?: string;
   hours?: number;

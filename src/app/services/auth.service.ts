@@ -32,11 +32,11 @@ export class AuthService {
 
   login(credentials: LoginCredentials, redirect?: string) {
     if(redirect) console.log(redirect)
-    this.http.get<Profile>(this.API_URL+'login/user/'+credentials.user+'/lastname/'+credentials.lastname)
+    this.http.get<Profile>(this.API_URL+'login/id/'+credentials.id+'/lastname/'+credentials.lastName)
     .subscribe(profile=> {
       this.profile = profile;
       this.authSub.next(profile);
-      localStorage.setItem('usr', JSON.stringify({ user: profile.employeeid, lastname: profile.lastname}));
+      localStorage.setItem('usr', JSON.stringify({ id: profile.id, lastName: profile.lastName}));
       let location = redirect && redirect.length > 1 ? redirect : '/calendar';
       this.rt.navigate([location]);
     }, err=> {

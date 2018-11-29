@@ -1,20 +1,17 @@
 export interface Profile {
   id?: number;
-  employeeid?: number;
-  lastname?: string;
-  firstname?: string;
-  displayname?: string;
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
   email?: string;
-  department?: string;
-  supervisor?: string;
+  departmentId?: string;
+  managerId?: string;
   phone?: string;
-  departmentid?: number;
-  hiredate?: Date;
+  hireDate?: Date;
   salary?: number;
-  paygrade?: string;
+  payCode?: string;
   location?: string;
   profile?: string;
-  contacts?: string[];
-  sex?: string;
+  gender?: string;
   role?: string;
 }

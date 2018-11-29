@@ -20,6 +20,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
   reportForm: FormGroup;
   profile: Profile;
   subs: Subscription[];
+  error: any;
 
   constructor(private ts: TimeService,
     private ds: DateService,
@@ -65,12 +66,13 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getTime() {
-    this.subs.push(this.ts.getAllTime(this.profile.employeeid)
+    this.subs.push(this.ts.getAllTime(this.profile.id)
     .subscribe(res=> {console.log(res)}, err=> { console.log(err)}));
   }
 
   getTimeByPeriod() {
-    this.subs.push(this.ts.getTimeByPeriod(this.profile.employeeid, this.reportForm.controls['startDate'].value, this.reportForm.controls['endDate'].value)
+    console.log('get time by period')
+    this.subs.push(this.ts.getTimeByPeriod(this.profile.id, this.reportForm.controls['startDate'].value, this.reportForm.controls['endDate'].value)
     .subscribe(res=> {console.log(res)}, err=> { console.log(err)}));
   }
 
@@ -93,7 +95,7 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.subs.push(this.reportForm.valueChanges.subscribe(value=> {
       console.log(value);
-      if(this.reportForm.valid) this.getTimeByPeriod();
+      // if(this.reportForm.valid) this.getTimeByPeriod();
     }));
 
   }

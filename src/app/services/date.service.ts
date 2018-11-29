@@ -31,7 +31,7 @@ export class DateService {
 
   getTimeByPeriod(start: any, end: any) {
     if(this.as.getProfile()) {
-      this.subs.push(this.ts.getTimeByPeriod(this.as.getProfile().employeeid, start, end)
+      this.subs.push(this.ts.getTimeByPeriod(this.as.getProfile().id, start, end)
       .subscribe(res=> { this.time = res; console.log(this.time) }, err=> { console.log(err); this.time =[] }));
     } else {
       this.time =[]

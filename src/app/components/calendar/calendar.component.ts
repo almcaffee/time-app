@@ -68,14 +68,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   isThisMonth(): boolean {
-    return this.month === this.ds.getCalendarMonth(new Date());
+    let today: Day = this.ds.populateDay(moment(new Date()));
+    return this.month.year === today.year && this.month.id === today.month;
   }
 
   /* Reactive form */
   setupForm() {
+    let id = this.profile.id || null;
     this.timeForm = new FormGroup({
-      employeeid: new FormControl(this.profile.employeeid, [Validators.required, Validators.pattern(/^[0-9]+$/)])
+      id: new FormControl(id, [Validators.required, Validators.pattern(/^[0-9]+$/)])
     });
+    // if(this.profile) this.timeForm.controls['id'].patchValue(this.profile.id);
     this.subs.push(this.timeForm.valueChanges.subscribe(timeFormValue=> console.log(timeFormValue)));
   }
 

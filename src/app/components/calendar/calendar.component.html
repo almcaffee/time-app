@@ -6,7 +6,11 @@
           <button mat-icon-buttom color="primary" (click)="getLastMonth()">
             <mat-icon>chevron_left</mat-icon>
           </button>
+          <!-- <input matInput [matDatepicker]="myDatepicker"class="hidden"> -->
           {{ month.name }} {{ month.year }}
+          <mat-icon *ngIf="!isThisMonth()" (click)="getThisMonth()" class="this-month">today</mat-icon>
+          <!-- <mat-datepicker-toggle [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker [touchUi]="ws.touchDevice" ></mat-datepicker> -->
           <button mat-icon-buttom color="primary" (click)="getNextMonth()">
             <mat-icon>chevron_right</mat-icon>
           </button>
