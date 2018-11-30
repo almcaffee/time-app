@@ -7,19 +7,40 @@
     </mat-card-header>
     <mat-card-content [formGroup]="reportForm">
       <mat-form-field>
-        <input matInput formControlName="startDate" [matDatepicker]="startDate" placeholder="Start Date">
+        <input matInput formControlName="startDate"
+        [min]="minDate"
+        [max]="maxDate"
+        [matDatepicker]="startDate"
+        (dateChange)="setDuration($event.value, 'startDate')"
+        placeholder="Start Date">
         <mat-error *ngIf="reportForm.controls.startDate.invalid">{{getErrorMessage('startDate')}}</mat-error>
         <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
         <mat-datepicker #startDate></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput formControlName="endDate" [matDatepicker]="endDate" placeholder="End Date">
-        <mat-error *ngIf="reportForm.controls.endDate.invalid">{{getErrorMessage('endDate')}}</mat-error>
+        <input matInput formControlName="endDate"
+          [min]="reportForm.controls.startDate.value"
+          [max]="maxDate"
+          [matDatepicker]="endDate"
+          [readonly]="!reportForm.controls.startDate.value"
+          [disabled]="!reportForm.controls.startDate.value"
+          (dateChange)="setDuration($event.value, 'endDate', true)"
+          placeholder="End Date">
+        <mat-error *ngIf="reportForm.controls.startDate.value && reportForm.controls.endDate.invalid">{{getErrorMessage('endDate')}}</mat-error>
         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
         <mat-datepicker #endDate></mat-datepicker>
       </mat-form-field>
-      <mat-icon *ngIf="reportForm.valid">check</mat-icon>
-      <app-table *ngIf="reportForm && reportForm.valid" [startDate]="reportForm.controls.startDate.value" [endDate]="reportForm.controls.endDate.value" [actions]="true" (selectedDate)="doSomething($event)"></app-table>
+      <button mat-flat-button [disabled]="!canGetReport" color="primary" (click)="viewReport()">View
+        <mat-icon *ngIf="reportForm.valid">check</mat-icon>
+      </button>
+      <app-table *ngIf="reportForm && reportForm.valid"
+        [startDate]="reportForm.controls.startDate.value"
+        [endDate]="reportForm.controls.endDate.value"
+        [actions]="true"
+        [search]="viewSub$"
+        [view]="getReport"
+        (selectedDate)="doSomething($event)">
+      </app-table>
     </mat-card-content>
   </mat-card>
 

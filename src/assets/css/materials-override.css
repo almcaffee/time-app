@@ -47,7 +47,8 @@ mat-form-field + mat-error {
 }
 
 .mat-card-content .mat-form-field + .mat-icon,
-.mat-card-content .mat-form-field + .mat-form-field {
+.mat-card-content .mat-form-field + .mat-form-field,
+.mat-card-content .mat-form-field + button {
   margin-left: 2rem;
 }
 

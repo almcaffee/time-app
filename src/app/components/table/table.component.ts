@@ -4,7 +4,7 @@ import { DateService }  from '@services/date.service';
 import { AuthService }  from '@services/auth.service';
 import { WindowService } from '@services/window.service';
 import { Observable, Subscription, timer } from 'rxjs';
-import { Month, Day, Profile, TimeCode } from '@models';
+import { Month, Day, Profile, TimeCode, Period } from '@models';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
@@ -17,11 +17,13 @@ import { filter, map } from 'rxjs/operators';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() startDate: any;
   @Input() endDate: any;
   @Input() actions: boolean;
+  @Input() view: boolean;
+  @Input() search: Subscription;
   @Output() selectedDate = new EventEmitter<DateSelection>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -29,7 +31,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
   timeForm: FormGroup;
   codes: TimeCode[];
   days: Day[];
-  month: Month;
+  period: Period;
   subs: Subscription[];
   dataSource: MatTableDataSource<object>;
   displayedColumns: string[] = ['weekDay', 'date', 'code', 'time'];
@@ -54,13 +56,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
     }
   }
 
-  ngAfterViewInit() {
-    this.getPeriod(this.startDate, this.endDate);
-  }
-
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes')
-    if(changes['startDate'] || changes['endDate']) {
+    if(changes['view'] && changes['view'].currentValue) {
       if(this.startDate && this.endDate) {
         this.getPeriod(this.startDate, this.endDate);
       }
@@ -84,17 +81,12 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
   }
 
   getPeriod(sD: any, eD: any) {
-    console.log(sD)
-    console.log(eD)
     if(sD && eD && moment.isMoment(sD) && moment.isMoment(eD) && sD.isValid() && eD.isValid() && sD != eD) {
-      console.log(sD)
-      console.log(eD)
-      this.month = this.ds.getPeriod(sD, eD);
-      this.cdr.detectChanges();
-      this.dataSource = new MatTableDataSource(this.month.days);
-      this.cdr.detectChanges();
-      timer(200).subscribe(()=>  {
-         this.dataSource.paginator = this.paginator;
+      this.ds.getPeriod(sD, eD).subscribe(p=> {
+        this.period = p;
+        this.dataSource = new MatTableDataSource(this.period.days);
+        this.cdr.detectChanges();
+        this.dataSource.paginator = this.paginator;
       });
      }
   }
@@ -106,7 +98,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
 
   /** Gets the total cost of all transactions. */
   getTotalHours() {
-    // return this.month.days.map(d => d.time).reduce((acc, value) => acc + value, 0);
+    // return this.period.days.map(d => d.time).reduce((acc, value) => acc + value, 0);
   }
 
   pushActions() {

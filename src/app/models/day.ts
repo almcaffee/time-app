@@ -7,7 +7,7 @@ export interface Day {
   day?: number;
   moment?: any;
   year?: number;
-  time?: TimeEntry;
+  time?: TimeEntry[];
   totalTime?: number;
   edit?: boolean;
 }

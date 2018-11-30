@@ -3,9 +3,9 @@ import { TimeService } from '@services/time.service';
 import { DateService }  from '@services/date.service';
 import { AuthService }  from '@services/auth.service';
 import { WindowService } from '@services/window.service';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Observable, Subscription, Subject, timer } from 'rxjs';
 import { Month, Day, Profile, DateSelection } from '@models';
-import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
@@ -13,7 +13,7 @@ import * as moment from 'moment';
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.scss']
 })
-export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ReportComponent implements OnInit, OnDestroy {
 
   startDate: any;
   endDate: any;
@@ -21,6 +21,13 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
   profile: Profile;
   subs: Subscription[];
   error: any;
+  minDate: Date;
+  maxDate: Date;
+  getReport: boolean;
+  canGetReport: boolean;
+  previousFormValue: any;
+  view = new Subject<any>();
+  viewSub$ = this.view.asObservable();
 
   constructor(private ts: TimeService,
     private ds: DateService,
@@ -40,69 +47,118 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setupForm();
   }
 
-  ngAfterViewInit() {
-    /* Materials datepicker sets value of input as a datepicker instance (bug) on init, give time to push initial values*/
-    // timer(500).subscribe(()=> {
-    //   if(this.startDate && this.endDate) {
-    //     this.reportForm.patchValue({ startDate: this.startDate, endDate: this.endDate });
-    //   } else {
-    //     let d = new Date();
-    //     let td = moment(d);
-    //     console.log('patch new date')
-    //     console.log(td.daysInMonth())
-    //     console.log(td.startOf('month'))
-    //     console.log(td.endOf('month'))
-    //     this.reportForm.patchValue({ startDate: td.startOf('month'), endDate: td.endOf('month') });
-    //   }
-    // });
-  }
-
   /* Clear memeory of subs on destroy */
   ngOnDestroy() {
     this.subs.forEach(s=> s.unsubscribe());
   }
 
-  doSomething(event: any) {
-    console.log(event)
-  }
-
+  /* Get input error message */
   getErrorMessage(control: string) {
     return this.reportForm.controls[control].hasError('required') ? 'Date required' : 'Invalid Date';
   }
 
+  /* Get all time for current profile */
   getTime() {
     this.subs.push(this.ts.getAllTime(this.profile.id)
     .subscribe(res=> {console.log(res)}, err=> { console.log(err)}));
   }
 
+  /* Call api get time */
   getTimeByPeriod() {
     this.subs.push(this.ts.getTimeByPeriod(this.profile.id, this.reportForm.controls['startDate'].value, this.reportForm.controls['endDate'].value)
     .subscribe(res=> {console.log(res)}, err=> { console.log(err)}));
   }
 
-  isValidDate(control: FormControl): any {
-    if(moment.isMoment(control.value)) {
-      return true;
-    } else if(moment.isDate(control.value) && !isNaN(control.value.getTime())) {
-      return true;
-    } else if(moment(control.value).isValid()) {
-      return true;
+  /* Custome ValidatorFn to test if value required */
+  isRequired(control: FormControl): ValidationErrors | null {
+    // console.log(control)
+    if(control.parent) {
+      if(control === control.parent.controls['endDate']) {
+        let valid = control.value && control.parent.controls['startDate'].value ? true : false;
+        if(valid) {
+          return null
+        } else {
+          return { required: 'End date required' };
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return { invalid: 'Invalid FormGroup' };
+    }
+  }
+
+  /* Custome ValidatorFn to double check date validity */
+  isValidDate(control: FormControl): ValidationErrors | null {
+    if(control.value) {
+      if(moment.isMoment(control.value)) {
+        return null;
+      } else if(moment.isDate(control.value) && !isNaN(control.value.getTime())) {
+        return null;
+      } else if(moment(control.value).isValid()) {
+        return null;
+      } else {
+        return { invalid: 'Invalid date' };
+      }
     } else {
       return null;
     }
   }
 
+  /* Create reactive formGroup */
   setupForm() {
     this.reportForm = new FormGroup({
-      startDate: new FormControl(null, [Validators.required, this.isValidDate]),
-      endDate: new FormControl(null, [Validators.required, this.isValidDate])
+      startDate: new FormControl(null, [this.isRequired, this.isValidDate]),
+      endDate: new FormControl(null, [this.isRequired, this.isValidDate])
     });
-    this.subs.push(this.reportForm.valueChanges.subscribe(value=> {
-      console.log(value);
-      // if(this.reportForm.valid) this.getTimeByPeriod();
-    }));
-
+    // Dont search if dates not changed
+    this.reportForm.valueChanges.subscribe(value=> {
+      if(this.reportForm.valid && value != this.previousFormValue) {
+        this.canGetReport = true;
+        this.previousFormValue = value;
+      } else {
+        this.canGetReport = false;
+        this.getReport = false;
+      }
+      console.log(this.reportForm)
+    });
   }
 
+  /* Set min/max for datepickers */
+  setDuration(date: any, controlName: string, before?: boolean) {
+    if(!this.validateDate(this.reportForm.controls[controlName].value)) {
+      let milliDate = parseInt(date.format('x'));
+      let duration = 1000*60*60*24*90; // 90 days in milliseconds
+      if(before) {
+        this.minDate = new Date(milliDate - duration);
+      } else {
+        this.maxDate = new Date(milliDate + duration);
+      }
+    }
+  }
+
+  validateDate(dt: any): ValidationErrors | null {
+    if(moment.isMoment(dt)) {
+      return null;
+    } else if(moment.isDate(dt) && !isNaN(dt.getTime())) {
+      return null;
+    } else if(moment(dt).isValid()) {
+      return null;
+    } else {
+      return { invalid: 'Invalid date' };
+    }
+  }
+
+  /* Testing input as subscription */
+  // viewReport() {
+  //   this.view.next();
+  // }
+
+  /* Testing input as boolean */
+  viewReport() {
+    this.getReport = true;
+    this.canGetReport = false;
+    timer(500).subscribe(()=> this.getReport = false);
+  }
 
 }

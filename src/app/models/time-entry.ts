@@ -1,5 +1,6 @@
 export interface TimeEntry {
   id?: number;
+  date?: string;
   timeCode?: string;
   hours?: number;
   profileId?: number;

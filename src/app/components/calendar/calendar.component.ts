@@ -8,6 +8,7 @@ import { Month, Day, Profile } from '@models';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar',
@@ -51,16 +52,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   getLastMonth() {
     let lm = this.month.days[15].moment.subtract(1, 'months');
-    this.month = this.ds.getCalendarMonth(lm.toDate());
+    this.ds.getCalendarMonth(lm.toDate()).subscribe(m=> this.month = m).unsubscribe();
   }
 
   getNextMonth() {
     let nm = this.month.days[15].moment.add(1, 'months');
-    this.month = this.ds.getCalendarMonth(nm.toDate());
+    this.ds.getCalendarMonth(nm.toDate()).subscribe(m=> this.month = m).unsubscribe();
   }
 
   getThisMonth() {
-    this.month = this.ds.getCalendarMonth(new Date());
+    this.ds.getCalendarMonth(new Date()).subscribe(m=> this.month = m).unsubscribe();
   }
 
   isToday(obj1: any, obj2: any): boolean {

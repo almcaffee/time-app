@@ -9,20 +9,34 @@
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef> Date </th>
       <td mat-cell *matCellDef="let day"> {{day.moment | day:this.ws.mobile:true }} </td>
-      <td mat-footer-cell *matFooterCellDef> {{ this.month.days.length }} </td>
+      <td mat-footer-cell *matFooterCellDef> {{ period.days.length }} </td>
     </ng-container>
     <ng-container matColumnDef="code">
       <th mat-header-cell *matHeaderCellDef> Code </th>
-      <td mat-cell *matCellDef="let day" [class.invalid]="!day.edit && (!day.time || !day.time.id)">
-        <mat-form-field *ngIf="codes && day.edit" >
-          <mat-select [placeholder]="'Select Code'" [value]="day.time && day.time.id ? day.time.id : null">
-            <mat-option *ngFor="let code of codes" [value]="code.code">
-              {{code.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <ng-container *ngIf="!day.edit && day.time && day.time.id">{{ day.time.code }}</ng-container>
-        <ng-container *ngIf="!day.edit && (!day.time || !day.time.id)">N/A</ng-container>
+      <td mat-cell *matCellDef="let day" [class.invalid]="!day.edit && !day.time">
+        <ng-container *ngIf="day.time && day.time.length">
+          <div *ngFor="let entry of day.time">
+            <mat-form-field *ngIf="codes">
+              <mat-select [placeholder]="'Select Code'" [disabled]="!day.edit" [value]="entry.timeCode">
+                <mat-option *ngFor="let code of codes" [value]="code.code">
+                  {{code.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <ng-container *ngIf="!day.edit">{{ entry.timeCode }}</ng-container>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!day.time || !day.time.length">
+          <mat-form-field *ngIf="codes && day.edit">
+            <mat-select [placeholder]="'Select Code'" [value]="day.time && day.time.id ? day.time.id : null">
+              <mat-option *ngFor="let code of codes" [value]="code.code">
+                {{code.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <ng-container *ngIf="!day.edit && day.time && day.time.id">{{ day.time.code }}</ng-container>
+          <ng-container *ngIf="!day.edit && (!day.time || !day.time.id)">N/A</ng-container>
+        </ng-container>
        </td>
        <td mat-footer-cell *matFooterCellDef> Hours </td>
     </ng-container>
