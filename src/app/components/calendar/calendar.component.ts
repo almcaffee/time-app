@@ -55,20 +55,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getLastMonth() {
-    let lm = this.month.days[15].dateString;
+    let lm = moment(this.month.days[15].dateString).subtract(1, 'M').format('YYYY-MM-DD');
     let month = this.ds.getCalendarMonth(lm);
     this.setMonth(month);
   }
 
   getNextMonth() {
-    let nm = this.month.days[15].dateString;
+    let nm = moment(this.month.days[15].dateString).add(1, 'M').format('YYYY-MM-DD');
     let month = this.ds.getCalendarMonth(nm);
     this.setMonth(month);
   }
 
   getThisMonth() {
     let month = this.ds.getCalendarMonth(moment().format('YYYY-MM-DD'));
-    console.log(month)
     this.setMonth(month);
   }
 
@@ -102,5 +101,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       console.log(err);
     }));
   }
+
+  shiftMonth
 
 }

@@ -76,10 +76,6 @@ export class DateService {
     return days;
   }
 
-  /* 
-    Weird stuff happening with moment.js had to create a new moment instance for each variable
-    Dates seemed to be saving reference of instead of new moment in some functions
-  */
   getCalendarMonth(startDate: any): Month {
     let ms = new Date(startDate).getTime();
     let days: Day[] = [];
