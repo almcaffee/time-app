@@ -15,6 +15,7 @@ export class AuthService {
   private profile: Profile;
   authSub = new Subject<Profile>();
   authSub$ = this.authSub.asObservable();
+  img: any;
 
   constructor(private http: HttpClient, private rt: Router) {}
 
@@ -24,6 +25,16 @@ export class AuthService {
 
   getProfile(): Profile {
     return this.profile;
+  }
+
+  getProfileImage(id: number) {
+    this.http.get<any>(this.API_URL+'profile/img/id/'+id)
+    .subscribe(file=> {
+      this.img = file;
+      console.log(file)
+    }, err=> {
+      console.log(err);
+    });
   }
 
   isLoggedIn(): boolean {
@@ -36,6 +47,7 @@ export class AuthService {
     .subscribe(profile=> {
       this.profile = profile;
       this.authSub.next(profile);
+      this.getProfileImage(this.profile.id);
       localStorage.setItem('usr', JSON.stringify({ id: profile.id, lastName: profile.lastName}));
       let location = redirect && redirect.length > 1 ? redirect : '/calendar';
       this.rt.navigate([location]);
