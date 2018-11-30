@@ -22,6 +22,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() startDate: any;
   @Input() endDate: any;
   @Input() actions: boolean;
+  @Input() card: boolean;
   @Input() view: boolean;
   @Input() search: Subscription;
   @Output() selectedDate = new EventEmitter<DateSelection>();
@@ -82,12 +83,27 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
   getPeriod(sD: any, eD: any) {
     if(sD && eD && moment.isMoment(sD) && moment.isMoment(eD) && sD.isValid() && eD.isValid() && sD != eD) {
-      this.ds.getPeriod(sD, eD).subscribe(p=> {
-        this.period = p;
+      this.subs.push(this.ts.getTimeByPeriod(this.as.getProfile().id, sD.format('x'), eD.format('x'))
+      .subscribe(res=> {
+        let period = this.ds.getPeriod(sD, eD);
+        period.days = this.ds.getTimeEntries(period.days, res);
+        this.period = period;
         this.dataSource = new MatTableDataSource(this.period.days);
         this.cdr.detectChanges();
         this.dataSource.paginator = this.paginator;
-      });
+      }, err=> {
+        console.log(err)
+      }));
+      // let period = this.ds.getPeriod(sD, eD);
+      // console.log(period)
+      // console.log(this.ds)
+      // this.subs.push(this.ds.getTimeByPeriod(sD, eD, period.days).subscribe(dds=> {
+      //   period.days = dds;
+      //   this.period = period;
+      //   this.dataSource = new MatTableDataSource(this.period.days);
+      //   this.cdr.detectChanges();
+      //   this.dataSource.paginator = this.paginator;
+      // }));
      }
   }
 
@@ -98,7 +114,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
   /** Gets the total cost of all transactions. */
   getTotalHours() {
-    // return this.period.days.map(d => d.time).reduce((acc, value) => acc + value, 0);
+    return this.period.days.map(d => d.totalTime).reduce((acc, value) => acc + value, 0);
   }
 
   pushActions() {

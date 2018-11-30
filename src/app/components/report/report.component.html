@@ -4,6 +4,9 @@
       <mat-card-title>
         Time Report
       </mat-card-title>
+      <mat-card-subtitle>
+        Select a date range
+      </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content [formGroup]="reportForm">
       <mat-form-field>
@@ -31,8 +34,13 @@
         <mat-datepicker #endDate></mat-datepicker>
       </mat-form-field>
       <button mat-flat-button [disabled]="!canGetReport" color="primary" (click)="viewReport()">View
-        <mat-icon *ngIf="reportForm.valid">check</mat-icon>
+        <!-- <mat-icon *ngIf="reportForm.valid">check</mat-icon> -->
       </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content>
       <app-table *ngIf="reportForm && reportForm.valid"
         [startDate]="reportForm.controls.startDate.value"
         [endDate]="reportForm.controls.endDate.value"

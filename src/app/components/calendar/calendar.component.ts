@@ -31,19 +31,23 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private ds: DateService,
     private as: AuthService,
     public ws: WindowService) {
-    this.profile = this.as.getProfile();
-    this.ar.params.subscribe(params => console.log('Got new value for params', params));
-    this.getThisMonth();
     this.today = this.ds.today();
-    console.log(this.today)
-    console.log(this.month)
+    this.subs = [];
+    this.profile = this.as.getProfile();
+    if(!this.profile) {
+      this.as.authSub$.subscribe(profile=> {
+        this.profile = profile;
+        this.setupForm();
+        this.getThisMonth();
+      })
+    } else {
+      this.setupForm();
+      this.getThisMonth();
+    }
+    this.ar.params.subscribe(params => console.log('Got new value for params', params));
   }
 
-  ngOnInit() {
-    this.subs = [];
-    if(!this.profile) { this.as.authSub$.subscribe(profile=> { this.profile = profile; this.setupForm() }) }
-    else { this.setupForm() }
-  }
+  ngOnInit() {}
 
   /* Clear memeory of subs on destroy */
   ngOnDestroy() {
@@ -51,17 +55,21 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getLastMonth() {
-    let lm = this.month.days[15].moment.subtract(1, 'months');
-    this.ds.getCalendarMonth(lm.toDate()).subscribe(m=> this.month = m).unsubscribe();
+    let lm = this.month.days[15].dateString;
+    let month = this.ds.getCalendarMonth(lm);
+    this.setMonth(month);
   }
 
   getNextMonth() {
-    let nm = this.month.days[15].moment.add(1, 'months');
-    this.ds.getCalendarMonth(nm.toDate()).subscribe(m=> this.month = m).unsubscribe();
+    let nm = this.month.days[15].dateString;
+    let month = this.ds.getCalendarMonth(nm);
+    this.setMonth(month);
   }
 
   getThisMonth() {
-    this.ds.getCalendarMonth(new Date()).subscribe(m=> this.month = m).unsubscribe();
+    let month = this.ds.getCalendarMonth(moment().format('YYYY-MM-DD'));
+    console.log(month)
+    this.setMonth(month);
   }
 
   isToday(obj1: any, obj2: any): boolean {
@@ -81,6 +89,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     });
     // if(this.profile) this.timeForm.controls['id'].patchValue(this.profile.id);
     this.subs.push(this.timeForm.valueChanges.subscribe(timeFormValue=> console.log(timeFormValue)));
+  }
+
+  setMonth(month: Month) {
+    this.subs.push(this.ts.getTimeByPeriod(this.profile.id, month.days[0].moment, month.days[month.days.length-1].moment)
+    .subscribe(res=> {
+      let mm = month;
+      mm.days = this.ds.getTimeEntries(mm.days, res);
+      this.month = mm;
+    }, err=> {
+      this.month = month;
+      console.log(err);
+    }));
   }
 
 }

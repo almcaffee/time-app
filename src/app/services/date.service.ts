@@ -50,43 +50,11 @@ export class DateService {
     }
   }
 
-  getTimesByMonth(days: Day[], first: any, last: any) {
-    // return this.getTimeByPeriod(first, last, days)
-    // .subscribe(dds=> {
-    //   return of({ id: moment(first).month()+1, name: moment(first).format('MMMM'), days: dds, year: moment(first).year() })
-    // }, err=> {
-    //   return of({ id: moment(first).month()+1, name: moment(first).format('MMMM'), days: days, year: moment(first).year() })
-    // });
-    return this.ts.getTimeByPeriod(this.as.getProfile().id, first, last)
-    .subscribe(res=> {
-      let dds = this.getTimeEntries(days, res);
-      return { id: moment(first).month()+1, name: moment(first).format('MMMM'), days: dds, year: moment(first).year() };
-    }, err=> {
-      return { id: moment(first).month()+1, name: moment(first).format('MMMM'), days: days, year: moment(first).year() };
-    });
-  }
-
-  getTimesByPeriod(days: Day[], first: any, last: any) {
-    // return this.getTimeByPeriod(first, last, days)
-    // .subscribe(dds=> {
-    //    return of({ startDate: first, endDate: last, days: dds });
-    // }, err=> {
-    //    return of({ startDate: first, endDate: last, days: days });
-    // });
-    return this.ts.getTimeByPeriod(this.as.getProfile().id, first, last)
-    .subscribe(res=> {
-      let dds = this.getTimeEntries(days, res);
-      return { startDate: first, endDate: last, days: dds };
-    }, err=> {
-      return { startDate: first, endDate: last, days: days };
-    });
-  }
-
   getTimeByPeriod(start: any, end: any, days: Day[]): Observable<Day[]> {
     if(this.as.getProfile()) {
       this.subs.push(this.ts.getTimeByPeriod(this.as.getProfile().id, start, end)
       .subscribe(res=> {
-        return this.getTimeEntries(days, res);
+        return of(this.getTimeEntries(days, res));
       }, err=> {
         return of(days);
       }
@@ -96,7 +64,7 @@ export class DateService {
    }
   }
 
-  getWeeks(startDate: any, numWeeks?: number): Observable<Day[]> {
+  getWeeks(startDate: any, numWeeks?: number): Day[] {
     let days: Day[] = [];
     let startDayOfWeek = moment(startDate).day();
     let firstDayOfWeek = startDayOfWeek > 0 ? moment(startDate).subtract(startDayOfWeek, 'd') : moment(startDate);
@@ -105,15 +73,20 @@ export class DateService {
       if(i === 0) { days[i] = this.populateDay(firstDayOfWeek); }
       else { days[i] = this.populateDay(days[i - 1].moment.add(1, 'd')); }
     };
-    return of(days);
+    return days;
   }
 
-  getCalendarMonth(startDate: any): Observable<Month> {
+  /* 
+    Weird stuff happening with moment.js had to create a new moment instance for each variable
+    Dates seemed to be saving reference of instead of new moment in some functions
+  */
+  getCalendarMonth(startDate: any): Month {
+    let ms = new Date(startDate).getTime();
     let days: Day[] = [];
-    let firstDayOfTheMonth =  moment.isMoment(startDate) ? startDate.startOf('month') : moment(startDate).startOf('month');
-    let lastDayOfTheMonth = moment.isMoment(startDate) ? startDate.endOf('month') : moment(startDate).endOf('month');
-    let startDayOfMonth = firstDayOfTheMonth.day() > 0 ? firstDayOfTheMonth.subtract(firstDayOfTheMonth.day(), 'd') : firstDayOfTheMonth;
-    let endDayOfTheMonth = lastDayOfTheMonth.day() < 6 ? lastDayOfTheMonth.add(6 - lastDayOfTheMonth.day(), 'd') : lastDayOfTheMonth;
+    let firstDayOfTheMonth = moment(ms).startOf('month');
+    let lastDayOfTheMonth = moment(ms).endOf('month');
+    let startDayOfMonth = firstDayOfTheMonth.day() > 0 ? moment(ms).startOf('month').subtract(firstDayOfTheMonth.day(), 'd') : moment(ms).startOf('month');
+    let endDayOfTheMonth = lastDayOfTheMonth.day() < 6 ? moment(ms).endOf('month').add(6 - lastDayOfTheMonth.day(), 'd') : moment(ms).endOf('month');
     let numDates = endDayOfTheMonth.diff(startDayOfMonth, 'days');
     for(let i = 0; i <= numDates; i++) {
       if(i === 0) { days[i] = this.populateDay(startDayOfMonth); }
@@ -121,14 +94,14 @@ export class DateService {
         days[i] = this.populateDay(days[i - 1].moment.add(1, 'd'));
       }
     };
-    return this.getTimesByMonth(days, startDayOfMonth, endDayOfTheMonth);
+    return { id: firstDayOfTheMonth.month()+1, name: firstDayOfTheMonth.format('MMMM'), days: days, year: firstDayOfTheMonth.year() };
   }
 
-  getMonth(startDate: any): Observable<Month> {
+  getMonth(startDate: any): Month {
+    console.log(startDate)
     let days: Day[] = [];
     let firstDayOfTheMonth = moment.isMoment(startDate) ? startDate.startOf('month') : moment(startDate).startOf('month');
     let lastDayOfTheMonth = moment.isMoment(startDate) ? startDate.endOf('month') : moment(startDate).endOf('month');
-    // this.getTimeByPeriod(firstDayOfTheMonth, lastDayOfTheMonth);
     let numDates = lastDayOfTheMonth.diff(firstDayOfTheMonth, 'days');
     for(let i = 0; i <= numDates; i++) {
       if(i === 0) { days[i] = this.populateDay(firstDayOfTheMonth); }
@@ -136,14 +109,13 @@ export class DateService {
         days[i] = this.populateDay(days[i - 1].moment.add(1, 'd'));
       }
     };
-    return this.getTimesByMonth(days, firstDayOfTheMonth, lastDayOfTheMonth);
+    return { id: firstDayOfTheMonth.month()+1, name: firstDayOfTheMonth.format('MMMM'), days: days, year: firstDayOfTheMonth.year() }
   }
 
-  getPeriod(startDate: any, endDate: any): Observable<Period> {
+  getPeriod(startDate: any, endDate: any): Period {
     let days: Day[] = [];
     let firstDay = moment.isMoment(startDate) ? startDate : moment(startDate);
     let lastDay = moment.isMoment(endDate) ? endDate : moment(endDate);
-    // this.getTimeByPeriod(firstDay, lastDay);
     let numDates = lastDay.diff(firstDay, 'days');
     for(let i = 0; i <= numDates; i++) {
       if(i === 0) { days[i] = this.populateDay(firstDay); }
@@ -151,7 +123,7 @@ export class DateService {
         days[i] = this.populateDay(days[i - 1].moment.add(1, 'd'));
       }
     };
-    return this.getTimesByPeriod(days, firstDay, lastDay);
+    return { startDate: firstDay, endDate: lastDay, days: days };
   }
 
   isValid(value: any): boolean {
@@ -177,8 +149,10 @@ export class DateService {
       month: day.month() + 1,
       name: day.format('dddd'),
       day: day.date(),
+      dateString: day.format("YYYY-MM-DD"),
       moment: moment(ds, "YYYY-MM-DD"),
-      year: day.year()
+      year: day.year(),
+      totalTime: 0
     };
   }
 

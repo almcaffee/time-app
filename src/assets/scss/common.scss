@@ -21,7 +21,8 @@ app-table {
 }
 .mat-cell.invalid {
   background: #f4f5f5;
-  color: #ccc;
+  // color: #ccc;
+	opacity: 0.5;
 }
 .mat-cell.mat-column-actions button.edit {
   color: rgba(93,135,148,0.7);
@@ -38,6 +39,21 @@ app-table {
 .mat-cell.mat-column-actions button:disabled {
   color: #ccc !important;
 }
-table tr:nth-of-type(even) {
+table tbody tr:nth-of-type(even) {
   background: #f8f8f8;
+}
+.mat-card + .mat-card {
+	margin-top: 1rem !important;
+}
+app-table table tbody tr:hover {
+	background: rgba(93,135,148,.1);
+}
+app-table table tbody tr:hover .mat-cell.invalid {
+	background: none;
+	opacity: 1;
+}
+app-table table tbody tr:hover td:hover:not(.invalid) {
+	background: rgba(93,135,148,.05) !important;
+	// color: #fff !important;
+	text-shadow: 1px 1px rgba(255,255,255,0.8);
 }
