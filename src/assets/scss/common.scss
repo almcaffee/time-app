@@ -24,25 +24,49 @@ app-table {
   // color: #ccc;
 	opacity: 0.5;
 }
-.mat-cell.mat-column-actions button.edit {
+.mat-cell.mat-column-actions button {
   color: rgba(93,135,148,0.7);
+	&.edit {
+	  color: rgba(93,135,148,0.7);
+		&:hover {
+			color: rgba(93,135,148,1);
+		}
+	}
+	&.delete {
+	  color: rgba(82,89,90,0.7);
+		&:hover {
+		  color: rgba(82,89,90,1);
+		}
+	}
+	&:disabled {
+	  color: #ccc !important;
+	}
 }
-.mat-cell.mat-column-actions button.edit:hover {
-  color: rgba(93,135,148,1);
-}
-.mat-cell.mat-column-actions button.delete {
-  color: rgba(82,89,90,0.7);
-}
-.mat-cell.mat-column-actions button.delete:hover {
-  color: rgba(82,89,90,1);
-}
-.mat-cell.mat-column-actions button:disabled {
-  color: #ccc !important;
+// .mat-cell.mat-column-actions button.edit {
+//   color: rgba(93,135,148,0.7);
+// }
+// .mat-cell.mat-column-actions button.edit:hover {
+//   color: rgba(93,135,148,1);
+// }
+// .mat-cell.mat-column-actions button.delete {
+//   color: rgba(82,89,90,0.7);
+// }
+// .mat-cell.mat-column-actions button.delete:hover {
+//   color: rgba(82,89,90,1);
+// }
+// .mat-cell.mat-column-actions button:disabled {
+//   color: #ccc !important;
+// }
+.mat-cell.mat-column-code span + span {
+  margin-left: 5px;
+	padding-left: 5px;
+	border-left: 1px solid rgba(93,135,148,.1);
 }
 table tbody tr:nth-of-type(even) {
   background: #f8f8f8;
 }
-.mat-card + .mat-card {
+.mat-card + .mat-card,
+.mat-card + app-table {
 	margin-top: 1rem !important;
 }
 app-table table tbody tr:hover {

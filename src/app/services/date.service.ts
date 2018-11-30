@@ -30,19 +30,24 @@ export class DateService {
     return moment(value);
   }
 
+  findIndexes(dateString: string, times: TimeEntry[]): number[] {
+    let idxArr = [];
+    times.forEach((t, i)=> {
+      if(t.date === dateString) idxArr.push(i);
+    });
+    return idxArr;
+  }
+
   getTimeEntries(days: Day[], times: TimeEntry[]): Day[] {
     if(times.length) {
       days.forEach(dd=> {
-        let ddTime = times.find(te=> te.date === dd.moment.format('YYYY-MM-DD'));
-        if(ddTime) {
-          if(!dd.time) {
-            dd['time'] = [ddTime];
-            dd.totalTime = ddTime.hours;
-          } else {
-            dd.time.push(ddTime);
-            dd.totalTime += ddTime.hours;
+        let idxArr = this.findIndexes(dd.dateString, times);
+        idxArr.forEach(idx=> {
+          if(dd.time.indexOf(times[idx]) === -1) {
+            dd.time.push(times[idx]);
+            dd.totalTime += times[idx].hours;
           }
-        }
+        });
       });
       return days;
     } else {
@@ -148,6 +153,7 @@ export class DateService {
       dateString: day.format("YYYY-MM-DD"),
       moment: moment(ds, "YYYY-MM-DD"),
       year: day.year(),
+      time: [],
       totalTime: 0
     };
   }

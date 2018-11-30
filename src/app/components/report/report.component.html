@@ -39,17 +39,13 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card>
-    <mat-card-content>
-      <app-table *ngIf="reportForm && reportForm.valid"
-        [startDate]="reportForm.controls.startDate.value"
-        [endDate]="reportForm.controls.endDate.value"
-        [actions]="true"
-        [search]="viewSub$"
-        [view]="getReport"
-        (selectedDate)="doSomething($event)">
-      </app-table>
-    </mat-card-content>
-  </mat-card>
+  <app-table *ngIf="reportForm && reportForm.valid"
+    [startDate]="reportForm.controls.startDate.value"
+    [endDate]="reportForm.controls.endDate.value"
+    [actions]="true"
+    [search]="viewSub$"
+    [view]="getReport"
+    (selectedDate)="doSomething($event)">
+  </app-table>
 
 </div>

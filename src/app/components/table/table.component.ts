@@ -94,16 +94,6 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       }, err=> {
         console.log(err)
       }));
-      // let period = this.ds.getPeriod(sD, eD);
-      // console.log(period)
-      // console.log(this.ds)
-      // this.subs.push(this.ds.getTimeByPeriod(sD, eD, period.days).subscribe(dds=> {
-      //   period.days = dds;
-      //   this.period = period;
-      //   this.dataSource = new MatTableDataSource(this.period.days);
-      //   this.cdr.detectChanges();
-      //   this.dataSource.paginator = this.paginator;
-      // }));
      }
   }
 
