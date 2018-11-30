@@ -132,7 +132,7 @@ export class ReportComponent implements OnInit, OnDestroy {
       if(before) {
         this.minDate = new Date(milliDate - duration);
       } else {
-        this.maxDate = new Date(milliDate + duration);
+        this.maxDate = new Date(milliDate + duration).getTime() < new Date().getTime() ? new Date(milliDate + duration) : new Date();
       }
     }
   }
