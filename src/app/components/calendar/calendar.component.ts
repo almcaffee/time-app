@@ -48,7 +48,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {}
-  /* Test comment for jenkins build start */
+  /* Test comment for jenkins build start */  
   /* Clear memeory of subs on destroy */
   ngOnDestroy() {
     this.subs.forEach(s=> s.unsubscribe());
