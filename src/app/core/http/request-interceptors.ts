@@ -35,7 +35,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   //   return headers;
   // }
 
-  intercept(req: HttpRequest<any>, next: any): Observable<any> {
+  intercept(req: HttpRequest<any>, next: any): Observable<any> {  
     /* Change content/response types for posting/updating/retrieving files */
     if(req.method === 'GET' && (req.url.indexOf('img') > 0 || req.url.indexOf('file') > 0)) {
       const headers = this.getBlobHeader();
