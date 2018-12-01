@@ -42,13 +42,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
       })
     } else {
       this.setupForm();
-      this.getThisMonth();
+      this.getThisMonth();   
     }
     this.ar.params.subscribe(params => console.log('Got new value for params', params));
   }
 
   ngOnInit() {}
-  /* Test comment for jenkins build start */  
+  /* Test comment for jenkins build start */
   /* Clear memeory of subs on destroy */
   ngOnDestroy() {
     this.subs.forEach(s=> s.unsubscribe());
