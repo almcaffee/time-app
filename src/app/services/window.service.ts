@@ -14,6 +14,7 @@ export class WindowService implements OnDestroy {
 
   mobile: boolean;
   touchDevice: boolean
+  smallScreen: boolean;
   window: any;
   width: number;
 
@@ -47,6 +48,7 @@ export class WindowService implements OnDestroy {
     /* Checks touch points to determine touchscreen - use for swiping menu if future */
     this.touchDevice = this.window.navigator.maxTouchPoints > 0 || this.window.navigator.msMaxTouchPoints > 0 ? true : false;
     this.width = this.window.innerWidth;
+    this.smallScreen = this.width < 550 ? true : false;
     if(resize) this.winResizeWidth.next(this.width);
   }
 

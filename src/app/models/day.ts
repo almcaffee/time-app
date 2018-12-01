@@ -10,5 +10,5 @@ export interface Day {
   year?: number;
   time?: TimeEntry[];
   totalTime?: number;
-  edit?: boolean;
+  editable?: boolean;
 }

@@ -7,4 +7,5 @@ export interface TimeEntry {
   createdDate?: string;
   updateDate?: string;
   updaterId?: number;
+  editable?: boolean;
 }

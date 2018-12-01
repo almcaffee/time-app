@@ -30,10 +30,10 @@ export class DateService {
     return moment(value);
   }
 
-  findIndexes(dateString: string, times: TimeEntry[]): number[] {
+  findIndexes(key: any, val: any, arr: any[]): any[] {
     let idxArr = [];
-    times.forEach((t, i)=> {
-      if(t.date === dateString) idxArr.push(i);
+    arr.forEach((item, i)=> {
+      if(item[key] === val) idxArr.push(i);
     });
     return idxArr;
   }
@@ -41,12 +41,13 @@ export class DateService {
   getTimeEntries(days: Day[], times: TimeEntry[]): Day[] {
     if(times.length) {
       days.forEach(dd=> {
-        let idxArr = this.findIndexes(dd.dateString, times);
+        let idxArr = this.findIndexes('date', dd.dateString, times);
         idxArr.forEach(idx=> {
           if(dd.time.indexOf(times[idx]) === -1) {
             dd.time.push(times[idx]);
             dd.totalTime += times[idx].hours;
           }
+          if(this.findIndexes('editable', false, dd.time).length) dd.editable = false;
         });
       });
       return days;
@@ -154,7 +155,8 @@ export class DateService {
       moment: moment(ds, "YYYY-MM-DD"),
       year: day.year(),
       time: [],
-      totalTime: 0
+      totalTime: 0,
+      editable: true
     };
   }
 

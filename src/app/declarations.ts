@@ -5,6 +5,9 @@ import { CalendarComponent } from '@components/calendar/calendar.component';
 import { ProfileComponent } from '@components/profile/profile.component';
 import { ReportComponent } from '@components/report/report.component';
 import { DayPipe } from '@pipes/day.pipe';
+import { MenuComponent } from './components/menu/menu.component';
+import { TableComponent } from './components/table/table.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 export const AppDeclarations: any[] = [
   AppComponent,
@@ -13,7 +16,10 @@ export const AppDeclarations: any[] = [
   CalendarComponent,
   ProfileComponent,
   ReportComponent,
-  DayPipe
+  DayPipe,
+  MenuComponent,
+  TableComponent, 
+  DialogComponent
 ];
 
 export const EntryComponents: any[] = [

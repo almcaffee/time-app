@@ -11,8 +11,8 @@
       <mat-icon>settings</mat-icon>
       <mat-icon [matMenuTriggerFor]="appMenu" class="btn-hover">arrow_drop_down</mat-icon>
       <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
-        <button mat-menu-item>Settings</button>
-        <button mat-menu-item>Logout</button>
+        <!-- <button mat-menu-item>Settings</button> -->
+        <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
   </div>
   <div *ngIf="ws.mobile && menuOpen" class="time-navigation-mobile-menu">

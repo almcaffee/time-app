@@ -46,12 +46,6 @@ mat-form-field + mat-error {
   font-size: 1.5rem !important;
 }
 
-.mat-card-content .mat-form-field + .mat-icon,
-.mat-card-content .mat-form-field + .mat-form-field,
-.mat-card-content .mat-form-field + button {
-  margin-left: 2rem;
-}
-
 .mat-card-header-text {
     margin: 0px !important;
 }
@@ -66,4 +60,8 @@ mat-form-field + mat-error {
 
 th.mat-header-cell, td.mat-footer-cell, td.mat-cell {
   padding: 0 8px !important;
+}
+
+mat-card {
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.01), 0 2px 2px 0 rgba(0,0,0,.07), 0 1px 5px 0 rgba(0,0,0,.06) !important;
 }

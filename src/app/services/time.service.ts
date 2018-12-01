@@ -12,6 +12,8 @@ export class TimeService {
 
   private API_URL = 'http://localhost:8000/api/';
 
+  /* TODO: split non-ime crud operations to new service */
+
   constructor(private http: HttpClient) {}
 
   getAllTime(id: any): Observable<TimeEntry[]> {
@@ -36,6 +38,14 @@ export class TimeService {
 
   getTimeCodes(): Observable<TimeCode[]> {
     return this.http.get<TimeCode[]>(this.API_URL+'time/codes');
+  }
+
+  getAllDepartments(): Observable<any[]> {
+    return this.http.get<any[]>(this.API_URL+'departments');
+  }
+
+  getDepartment(id: string): Observable<any> {
+    return this.http.get<any>(this.API_URL+'department/id/'+id);
   }
 
 }

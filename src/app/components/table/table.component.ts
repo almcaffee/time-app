@@ -17,7 +17,7 @@ import { filter, map } from 'rxjs/operators';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit, OnChanges, OnDestroy {
+export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   @Input() startDate: any;
   @Input() endDate: any;
@@ -49,12 +49,17 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
     this.profile = this.as.getProfile();
     this.getTimeCodes();
     if(!this.profile) { this.as.authSub$.subscribe(profile=> this.profile = profile) }
+    this.ws.winResizeWidthSub$.subscribe(()=> this.changeDisplayColumns());
   }
 
   ngOnInit() {
     if(this.actions) {
-      this.pushActions();
+      this.pushColumns(['actions']);
     }
+  }
+
+  ngAfterViewInit() {
+    this.changeDisplayColumns();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -65,9 +70,9 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
     }
     if(changes['actions']) {
       if(changes['actions'].currentValue) {
-        this.pushActions();
+        this.pushColumns(['actions']);
       } else {
-        this.removeActions();
+        this.removeColumns(['actions']);
       }
     }
   }
@@ -75,6 +80,14 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
   /* Clear memeory of subs on destroy */
   ngOnDestroy() {
     this.subs.forEach(s=> s.unsubscribe());
+  }
+
+  changeDisplayColumns() {
+    if(this.ws.width < 500) {
+      this.removeColumns(['weekDay', 'code']);
+    } else {
+      this.pushColumns(['weekDay', 'code']);
+    }
   }
 
   emit(action: string, dt: any) {
@@ -87,6 +100,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(res=> {
         let period = this.ds.getPeriod(sD, eD);
         period.days = this.ds.getTimeEntries(period.days, res);
+        console.log(period.days)
         this.period = period;
         this.dataSource = new MatTableDataSource(this.period.days);
         this.cdr.detectChanges();
@@ -107,13 +121,17 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
     return this.period.days.map(d => d.totalTime).reduce((acc, value) => acc + value, 0);
   }
 
-  pushActions() {
-    let aIdx = this.displayedColumns.indexOf('actions');
-    if(aIdx === -1) this.displayedColumns.push('actions');
+  pushColumns(keys: string[]) {
+    keys.forEach(key=> {
+      let aIdx = this.displayedColumns.indexOf(key);
+      if(aIdx === -1) this.displayedColumns.push(key);
+    });
   }
 
-  removeActions() {
-    let aIdx = this.displayedColumns.indexOf('actions');
-    if(aIdx > -1) this.displayedColumns.splice(aIdx, 1);
+  removeColumns(keys: string[]) {
+    keys.forEach(key=> {
+      let aIdx = this.displayedColumns.indexOf(key);
+      if(aIdx > -1) this.displayedColumns.splice(aIdx, 1);
+    });
   }
 }

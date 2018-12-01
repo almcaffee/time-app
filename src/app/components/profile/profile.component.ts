@@ -11,11 +11,12 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
 
   profile: Profile;
+  dept: any;
   subs: Subscription[];
 
   constructor(private ts: TimeService,
@@ -24,10 +25,21 @@ export class ProfileComponent implements OnInit {
     public ws: WindowService) {
       this.subs = [];
       this.profile = this.as.getProfile();
+      this.as.authSub$.subscribe(profile=> { this.profile = profile; this.getDepartment(); console.log(this.profile) });
   }
 
   ngOnInit() {
-
+    if(this.profile) {
+      this.getDepartment();
+    }
   }
 
+  getDepartment() {
+    this.subs.push(this.ts.getDepartment(this.profile.departmentId)
+    .subscribe(dept=> {
+      this.dept = dept
+    }, err=> {
+      console.log(err)
+    }));
+  }
 }

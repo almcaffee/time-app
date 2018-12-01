@@ -49,6 +49,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.subs.forEach(s=> s.unsubscribe());
   }
 
+  logout() {
+    this.as.logout();
+  }
+
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }

@@ -7,6 +7,7 @@
       <mat-card-subtitle>
         Select a date range
       </mat-card-subtitle>
+      <div class="header-icon"><mat-icon>assessment</mat-icon></div>
     </mat-card-header>
     <mat-card-content [formGroup]="reportForm">
       <mat-form-field>
@@ -18,7 +19,7 @@
         placeholder="Start Date">
         <mat-error *ngIf="reportForm.controls.startDate.invalid">{{getErrorMessage('startDate')}}</mat-error>
         <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-        <mat-datepicker #startDate></mat-datepicker>
+        <mat-datepicker #startDate [touchUi]="ws.touchDevice && ws.smallScreen"></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
         <input matInput formControlName="endDate"
@@ -31,7 +32,7 @@
           placeholder="End Date">
         <mat-error *ngIf="reportForm.controls.startDate.value && reportForm.controls.endDate.invalid">{{getErrorMessage('endDate')}}</mat-error>
         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-        <mat-datepicker #endDate></mat-datepicker>
+        <mat-datepicker #endDate [touchUi]="ws.touchDevice && ws.smallScreen"></mat-datepicker>
       </mat-form-field>
       <button mat-flat-button [disabled]="!canGetReport" color="primary" (click)="viewReport()">View
         <!-- <mat-icon *ngIf="reportForm.valid">check</mat-icon> -->

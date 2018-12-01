@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { Router, NavigationExtras, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { WindowService } from '@services/window.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent {
   _auth: boolean;
   _subs: Subscription[];
 
-  constructor(private auth: AuthService, private rt: Router) {
+  constructor(private auth: AuthService, private rt: Router, private ws: WindowService) {
     this._subs = [];
     this._subs.push(this.rt.events.pipe(
      filter((event) => event instanceof NavigationEnd))

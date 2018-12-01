@@ -1,0 +1,37 @@
+@media screen and (max-width:600px) {
+  .mat-card-content .mat-form-field,
+  .mat-card-content .mat-form-field + button {
+    display: block;
+  }
+  .mat-card-content .mat-form-field + .mat-icon {
+    margin-left: 2rem;
+  }
+  .mat-card.profile {
+    .mat-card-header {
+      .mat-card-subtitle {
+        span {
+          display: block;
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (min-width:601px) {
+  .mat-card-content .mat-form-field + .mat-icon,
+  .mat-card-content .mat-form-field + .mat-form-field,
+  .mat-card-content .mat-form-field + button {
+    margin-left: 2rem;
+  }
+  .mat-card.profile {
+    .mat-card-header {
+      .mat-card-subtitle {
+        span {
+          display: inline-block;
+          width: 50%;
+        }
+      }
+    }
+  }
+}

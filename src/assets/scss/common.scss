@@ -1,26 +1,91 @@
 
+/* Tables */
+
+table tbody tr:nth-of-type(even) {
+	background: #f8f8f8;
+}
 
 app-table {
 	width: 100%;
 	display: block;
-	table tbody tr:hover {
-		background: rgba(93,135,148,.1);
-		.mat-cell.invalid {
-			background: none;
-			opacity: 1;
-		}
-		td:hover:not(.invalid) {
-			background: rgba(93,135,148,.05) !important;
-			text-shadow: 1px 1px rgba(255,255,255,0.8);
+	box-shadow: 0 3px 1px -2px rgba(0,0,0,.01), 0 2px 2px 0 rgba(0,0,0,.07), 0 1px 5px 0 rgba(0,0,0,.06) !important;
+	table {
+		padding: 0 24px 24px 24px;
+		tbody {
+			tr:hover {
+				background: rgba(93,135,148,.1);
+				.mat-cell.invalid {
+					background: none;
+					opacity: 1;
+				}
+				td:hover:not(.invalid) {
+					background: rgba(93,135,148,.05) !important;
+					text-shadow: 1px 1px rgba(255,255,255,0.8);
+				}
+			}
+			.mat-cell {
+				&.mat-column-actions button {
+				  color: rgba(93,135,148,0.7);
+					&.edit {
+					  color: rgba(93,135,148,0.7);
+						&:hover {
+							color: rgba(93,135,148,1);
+						}
+					}
+					&.delete {
+					  color: rgba(82,89,90,0.7);
+						&:hover {
+						  color: rgba(82,89,90,1);
+						}
+					}
+					&:disabled {
+					  color: #ccc !important;
+					}
+				}
+				&.mat-column-code span + span {
+				  margin-left: 5px;
+					padding-left: 5px;
+					border-left: 1px solid rgba(93,135,148,.1);
+				}
+				&.invalid {
+				  background: #f4f5f5;
+					opacity: 0.5;
+				}
+			}
 		}
 	}
 }
-.mat-card-title .mat-icon {
-	color: $blue;
+
+/* Cards */
+
+.mat-card + .mat-card,
+.mat-card + app-table {
+	margin-top: 1rem !important;
 }
+
+.mat-card-header {
+	position: relative;
+	.header-icon, .mat-card-title {
+		.mat-icon {
+			color: $primary;
+		}
+	}
+	.header-icon {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		.mat-icon {
+			font-size: 50px;
+			height: 50px;
+			width: 50px;
+		}
+	}
+}
+
 .btn-hover:hover {
 	cursor: pointer;
 }
+
 .component {
   $h: "Calc(100vh - 2rem)";
   padding: 1rem;
@@ -29,38 +94,4 @@ app-table {
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
-}
-.mat-cell.invalid {
-  background: #f4f5f5;
-	opacity: 0.5;
-}
-.mat-cell.mat-column-actions button {
-  color: rgba(93,135,148,0.7);
-	&.edit {
-	  color: rgba(93,135,148,0.7);
-		&:hover {
-			color: rgba(93,135,148,1);
-		}
-	}
-	&.delete {
-	  color: rgba(82,89,90,0.7);
-		&:hover {
-		  color: rgba(82,89,90,1);
-		}
-	}
-	&:disabled {
-	  color: #ccc !important;
-	}
-}
-.mat-cell.mat-column-code span + span {
-  margin-left: 5px;
-	padding-left: 5px;
-	border-left: 1px solid rgba(93,135,148,.1);
-}
-table tbody tr:nth-of-type(even) {
-  background: #f8f8f8;
-}
-.mat-card + .mat-card,
-.mat-card + app-table {
-	margin-top: 1rem !important;
 }

@@ -1,10 +1,25 @@
-<div class="component">
-  <!-- <mat-card>
+<div class="component" *ngIf="profile">
+  <mat-card class="profile">
+    <img [src]="profile.img" class="profile">
     <mat-card-header>
-      <img *ngIf="!profile.img" class="img-placeholder" src="">
+      <mat-card-title>
+        <!-- TODO: add name pipe -->
+        {{ profile.lastName }} {{ profile.suffix }}, {{ profile.firstName }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        <span *ngIf="dept">
+          <ng-container *ngIf="!ws.smallScreen">Unit:</ng-container>
+          {{ dept.name }}
+        </span>
+        <!-- TODO: add phone pipe -->
+        <span *ngIf="dept">
+          <ng-container *ngIf="!ws.smallScreen">Phone:</ng-container>
+          {{ profile.phone }}
+        </span>
+      </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content class="card-form">
+      
     </mat-card-content>
-  </mat-card> -->
-
+  </mat-card>
 </div>
