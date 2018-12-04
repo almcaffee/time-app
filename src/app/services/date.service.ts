@@ -40,14 +40,22 @@ export class DateService {
 
   getTimeEntries(days: Day[], times: TimeEntry[]): Day[] {
     if(times.length) {
-      days.forEach(dd=> {
+      days.forEach((dd,i)=> {
         let idxArr = this.findIndexes('date', dd.dateString, times);
         idxArr.forEach(idx=> {
           if(dd.time.indexOf(times[idx]) === -1) {
             dd.time.push(times[idx]);
             dd.totalTime += times[idx].hours;
           }
-          if(this.findIndexes('editable', false, dd.time).length) dd.editable = false;
+          if(this.findIndexes('editable', false, dd.time).length) {
+            dd.editable = false;
+            // If non-ediable this means previous days are also
+            // traverse array up to day before make sure are are set to false
+            // for days wih no time
+            for(let idx = 0; idx < i; i++) {
+              if(!days[i].time.length) days[i].editable = false;
+            }
+          }
         });
       });
       return days;

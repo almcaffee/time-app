@@ -13,7 +13,7 @@ import * as moment from 'moment';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   profile: Profile;
   dept: any;
@@ -25,13 +25,17 @@ export class ProfileComponent implements OnInit {
     public ws: WindowService) {
       this.subs = [];
       this.profile = this.as.getProfile();
-      this.as.authSub$.subscribe(profile=> { this.profile = profile; this.getDepartment(); console.log(this.profile) });
+      this.subs.push(this.as.authSub$.subscribe(profile=> { this.profile = profile; this.getDepartment(); console.log(this.profile) }));
   }
 
   ngOnInit() {
     if(this.profile) {
       this.getDepartment();
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(s=> s.unsubscribe());
   }
 
   getDepartment() {

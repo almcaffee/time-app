@@ -5,9 +5,11 @@ import { CalendarComponent } from '@components/calendar/calendar.component';
 import { ProfileComponent } from '@components/profile/profile.component';
 import { ReportComponent } from '@components/report/report.component';
 import { DayPipe } from '@pipes/day.pipe';
-import { MenuComponent } from './components/menu/menu.component';
-import { TableComponent } from './components/table/table.component';
-import { DialogComponent } from './components/dialog/dialog.component';
+import { MenuComponent } from '@components/menu/menu.component';
+import { TableComponent } from '@components/table/table.component';
+import { DialogComponent } from '@components/dialog/dialog.component';
+import { TimeEntryComponent } from '@components/time-entry/time-entry.component';
+import { TimeComponent } from '@components/time/time.component';
 
 export const AppDeclarations: any[] = [
   AppComponent,
@@ -18,8 +20,10 @@ export const AppDeclarations: any[] = [
   ReportComponent,
   DayPipe,
   MenuComponent,
-  TableComponent, 
-  DialogComponent
+  TableComponent,
+  DialogComponent,
+  TimeEntryComponent,
+  TimeComponent
 ];
 
 export const EntryComponents: any[] = [
