@@ -1,3 +1,12 @@
+/* buttons */
+
+button {
+	border: 0;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
 
 /* Tables */
 
@@ -42,11 +51,24 @@ app-table {
 					  color: #ccc !important;
 					}
 				}
-				&.mat-column-code span + span {
-				  margin-left: 5px;
-					padding-left: 5px;
-					border-left: 1px solid rgba(93,135,148,.1);
+				&.mat-column-time span,
+				&.mat-column-code span {
+				  display: block;
+					padding: 4px 0;
 				}
+				&.mat-column-time span + span,
+				&.mat-column-code span + span {
+					border-top: 1px solid rgba(93,135,148,.1);
+				}
+				// &.mat-column-time span + span:nth-of-type(even),
+				// &.mat-column-code span + span:nth-of-type(even) {
+				// 	background: rgba(93,135,148,.05);
+				// }
+				// &.mat-column-code span + span {
+				//   margin-left: 5px;
+				// 	padding-left: 5px;
+				// 	border-left: 1px solid rgba(93,135,148,.1);
+				// }
 				&.invalid {
 				  background: #f4f5f5;
 					opacity: 0.5;

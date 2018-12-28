@@ -37,17 +37,21 @@ export class AuthService {
      reader.readAsDataURL(img);
   }
 
-  getProfile(): Profile {
-    return this.profile;
+  getProfile(userId: any)  {
+    return this.http.get<Profile>(this.API_URL+'profile/id/'+userId);
   }
 
-  getProfileImage(id: number) {
+  getProfileImage(id: any) {
     this.http.get<any>(this.API_URL+'profile/img/id/'+id)
     .subscribe(file=> {
       this.convertBlobToImage(file);
     }, err=> {
       console.log(err);
     });
+  }
+
+  getUser(userId?: any): Profile {
+      return this.profile;
   }
 
   isLoggedIn(): boolean {

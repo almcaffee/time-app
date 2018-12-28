@@ -16,6 +16,7 @@ import * as moment from 'moment';
 export class ProfileComponent implements OnInit, OnDestroy {
 
   profile: Profile;
+  mgr: Profile;
   dept: any;
   subs: Subscription[];
 
@@ -24,13 +25,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private as: AuthService,
     public ws: WindowService) {
       this.subs = [];
-      this.profile = this.as.getProfile();
-      this.subs.push(this.as.authSub$.subscribe(profile=> { this.profile = profile; this.getDepartment(); console.log(this.profile) }));
+      this.profile = this.as.getUser();
+      this.subs.push(this.as.authSub$.subscribe(profile=> { this.profile = profile; this.getData(); }));
   }
 
   ngOnInit() {
     if(this.profile) {
-      this.getDepartment();
+      this.getData();
     }
   }
 
@@ -41,9 +42,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
   getDepartment() {
     this.subs.push(this.ts.getDepartment(this.profile.departmentId)
     .subscribe(dept=> {
-      this.dept = dept
+      this.dept = dept;
     }, err=> {
       console.log(err)
     }));
+  }
+
+  getManager() {
+    if(this.profile.managerId) {
+      this.subs.push(this.as.getProfile(this.profile.managerId)
+      .subscribe(mgr=> {
+        this.mgr = mgr;
+      }, err=> {
+        console.log(err)
+      }));
+    }
+  }
+
+  getData() {
+    this.getDepartment();
+    this.getManager();
   }
 }

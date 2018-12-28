@@ -49,12 +49,13 @@ export class DateService {
           }
           if(this.findIndexes('editable', false, dd.time).length) {
             dd.editable = false;
+            /* TODO: move editable to backend process */
             // If non-ediable this means previous days are also
             // traverse array up to day before make sure are are set to false
             // for days wih no time
-            for(let idx = 0; idx < i; i++) {
-              if(!days[i].time.length) days[i].editable = false;
-            }
+            // for(let idx = 0; idx < i; i++) {
+            //   if(!days[i].time.length) days[i].editable = false;
+            // }
           }
         });
       });
@@ -65,8 +66,8 @@ export class DateService {
   }
 
   getTimeByPeriod(start: any, end: any, days: Day[]): Observable<Day[]> {
-    if(this.as.getProfile()) {
-      this.subs.push(this.ts.getTimeByPeriod(this.as.getProfile().id, start, end)
+    if(this.as.getUser()) {
+      this.subs.push(this.ts.getTimeByPeriod(this.as.getUser().id, start, end)
       .subscribe(res=> {
         return of(this.getTimeEntries(days, res));
       }, err=> {

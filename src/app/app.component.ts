@@ -13,16 +13,26 @@ import { WindowService } from '@services/window.service';
 export class AppComponent {
 
   _auth: boolean;
+  _authCheck: boolean;
   _subs: Subscription[];
 
   constructor(private as: AuthService, private rt: Router, private ws: WindowService) {
     this._subs = [];
-    this._subs.push(this.as.authSub$.subscribe(()=> this._auth = true ));
+    // if profile returned user is authenticted
+    this._subs.push(this.as.authSub$.subscribe(profile=> {
+      if(profile) { this._auth = true }
+    }));
+    // Grab and store previous route on navigation
     this._subs.push(this.rt.events.pipe(
      filter((event) => event instanceof NavigationEnd))
      .subscribe((event) => {
        localStorage.setItem('prvRt', this.rt.url);
      }));
+     // Check for localStorage credentials
+    this.checkAuth();
+  }
+
+  checkAuth() {
     if(!!localStorage.getItem('usr') && !this.as.isLoggedIn() && this.rt.url.length > 0) {
       let prvRt = localStorage.getItem('prvRt');
       this.as.login(JSON.parse(localStorage.getItem('usr')), prvRt);
@@ -30,6 +40,8 @@ export class AppComponent {
     } else {
       localStorage.clear();
     }
+    // no view in tmeplate until auth checked
+    this._authCheck = true;
   }
 
 }

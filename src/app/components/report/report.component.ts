@@ -34,7 +34,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     private as: AuthService,
     public ws: WindowService) {
     this.subs = [];
-    this.profile = this.as.getProfile();
+    this.profile = this.as.getUser();
     if(!this.profile) {
       this.as.authSub$.subscribe(profile=> {
         this.profile = profile;

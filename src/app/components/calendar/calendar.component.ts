@@ -33,7 +33,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     public ws: WindowService) {
     this.today = this.ds.today();
     this.subs = [];
-    this.profile = this.as.getProfile();
+    this.profile = this.as.getUser();
     if(!this.profile) {
       this.as.authSub$.subscribe(profile=> {
         this.profile = profile;
@@ -42,7 +42,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       })
     } else {
       this.setupForm();
-      this.getThisMonth();   
+      this.getThisMonth();
     }
     this.ar.params.subscribe(params => console.log('Got new value for params', params));
   }
@@ -91,15 +91,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   setMonth(month: Month) {
-    this.subs.push(this.ts.getTimeByPeriod(this.profile.id, month.days[0].moment, month.days[month.days.length-1].moment)
-    .subscribe(res=> {
-      let mm = month;
-      mm.days = this.ds.getTimeEntries(mm.days, res);
-      this.month = mm;
-    }, err=> {
-      this.month = month;
-      console.log(err);
-    }));
+    this.month = month;
+    // this.subs.push(this.ts.getTimeByPeriod(this.profile.id, month.days[0].moment, month.days[month.days.length-1].moment)
+    // .subscribe(res=> {
+    //   let mm = month;
+    //   mm.days = this.ds.getTimeEntries(mm.days, res);
+    //   this.month = mm;
+    // }, err=> {
+    //   this.month = month;
+    //   console.log(err);
+    // }));
   }
 
   shiftMonth

@@ -14,12 +14,12 @@
         <!-- TODO: add phone pipe -->
         <span *ngIf="dept">
           <ng-container *ngIf="!ws.smallScreen">Phone:</ng-container>
-          {{ profile.phone }}
+          {{ profile.phone | phone }}
         </span>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="card-form">
-      
+
     </mat-card-content>
   </mat-card>
 </div>

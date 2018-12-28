@@ -15,7 +15,10 @@
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
   </div>
-  <div *ngIf="ws.mobile && menuOpen" class="time-navigation-mobile-menu">
-    <app-menu></app-menu>
-  </div>
+  <ng-container *ngIf="ws.mobile && menuOpen">
+    <div class="time-navigation-mobile-menu">
+      <app-menu></app-menu>
+    </div>
+    <div class="time-navigation-mobile-menu-mask" (click)="toggleMenu()"></div>
+  </ng-container>
 </div>

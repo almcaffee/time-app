@@ -20,8 +20,12 @@
     <mat-card-content>
       <div class="days">
         <div *ngFor="let day of month.days" class="day" [class.today]="isToday(day,today)" [class.disabled]="day.month != month.id">
-          <div class="name">{{ day.name | day:this.ws.mobile }}</div>
-          <div class="date">{{ day.day }}</div>
+          <div class="name">
+            <span>{{ day.name | day:this.ws.mobile }}</span>
+          </div>
+          <div class="date">
+            <span>{{ day.day }}</span>
+          </div>
         </div>
       </div>
     </mat-card-content>
