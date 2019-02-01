@@ -5,31 +5,42 @@
 @media screen and (max-width: 786px) {
   .date {
     font-size: 1rem;
-    // padding: .5rem;
   }
   .name {
     font-size: .75rem;
+  }
+  .icon {
+    right: .25vw !important;
+    bottom: .25vw !important;
+    .material-icons {
+      height: 2vw;
+      width: 2vw;
+      font-size: 2vw;
+    }
   }
 }
 
 @media screen and (min-width: 787px) and (max-width: 1024px) {
   .date {
     font-size: 1.25rem;
-    // @include padding-day-compact-sq;
   }
   .name {
     font-size: .75rem;
-    // @include padding-compact;
+  }
+  .icon {
+    .material-icons {
+      height: 18px;
+      width: 18px;
+      font-size: 18px;
+    }
   }
 }
 
 @media screen and (min-width: 1025px) {
   .date {
     font-size: 1.5rem;
-    // @include padding-day;
   }
   .name {
-    // @include padding-compact;
   }
 }
 
@@ -45,7 +56,6 @@
     .month {
       flex: 100%;
       padding-bottom: 1rem;
-      // @include padding-default;
       h1 {
         font-size: 1.5rem;
         text-align: center;
@@ -67,6 +77,10 @@
       }
     }
   }
+  .mat-card-content {
+    // background: $offWhite;
+    border: 1px solid #e6e6e6;
+  }
   .days {
     width: 100%;
     max-width: 80vw;
@@ -77,6 +91,7 @@
       flex: 13.5%;
       border: 1px solid transparent;
       text-align: center;
+      position: relative;
       .name, .date {
         display: flex;
         justify-content: space-around;
@@ -86,22 +101,37 @@
         }
       }
       .name {
-        background: $tertiary;
+        background: $secondary;
         height: 2.75vw;
         max-height: 32px;
+        color: $white;
       }
       .date {
         height: 8vw;
         max-height: 96px;
       }
+      .icon {
+        display: inline-block;
+        overflow: hidden;
+        position: absolute;
+        right: .5vw;
+        bottom: .5vw;
+        color: $tertiary;
+      }
       &.today,
       &:hover {
-        border-color: $primary;
+        background: $offWhite;
         cursor: pointer;
         .name {
           color: $white;
           background: $primary;
         }
+        .icon {
+          color: $primary;
+        }
+      }
+      &.today {
+        border-color: $primary;
       }
       &.disabled {
         border-color: #e6e6e6;

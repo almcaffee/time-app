@@ -38,7 +38,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     if(!this.profile) {
       this.as.authSub$.subscribe(profile=> {
         this.profile = profile;
-        this.getTime();
+        timer(1000).subscribe(() => this.getWeeks());
       });
     }
   }
@@ -67,6 +67,14 @@ export class ReportComponent implements OnInit, OnDestroy {
   getTimeByPeriod() {
     this.subs.push(this.ts.getTimeByPeriod(this.profile.id, this.reportForm.controls['startDate'].value, this.reportForm.controls['endDate'].value)
     .subscribe(res=> {console.log(res)}, err=> { console.log(err)}));
+  }
+
+  getWeeks() {
+    let weeks = this.ds.getWeeks(new Date(), 2);
+    console.log(weeks)
+    this.reportForm.controls['startDate'].patchValue(weeks[0].moment);
+    this.reportForm.controls['endDate'].patchValue(weeks[weeks.length - 1].moment);
+    this.viewReport();
   }
 
   /* Custome ValidatorFn to test if value required */

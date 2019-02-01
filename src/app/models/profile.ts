@@ -14,5 +14,5 @@ export interface Profile {
   profile?: string;
   gender?: string;
   role?: string;
-  img?: string;
+  img?: any;
 }

@@ -59,10 +59,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     }
   }
 
+  /* Wait for view to check display size */
   ngAfterViewInit() {
     this.changeDisplayColumns();
   }
 
+  /* Actions for input changes */
   ngOnChanges(changes: SimpleChanges) {
     if(changes['view']) {
       console.log('changes view')
@@ -87,6 +89,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     this.subs.forEach(s=> s.unsubscribe());
   }
 
+  /* Small screen size removes unnecessary columns */
   changeDisplayColumns() {
     if(this.ws.width < 500) {
       this.removeColumns(['weekDay', 'code']);
@@ -95,43 +98,38 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     }
   }
 
+  /* Emits selected date */
   emit(action: string, dt: any) {
     this.selectedDate.emit({action: action, date: dt, type: 'moment'});
   }
 
   getPeriod(sD: any, eD: any) {
-    console.log('get period');
-    console.log(sD)
-    console.log(eD)
-    if(sD && eD && moment.isMoment(sD) && moment.isMoment(eD) && sD.isValid() && eD.isValid() && sD != eD) {
+    // if(sD && eD && moment.isMoment(sD) && moment.isMoment(eD) && sD.isValid() && eD.isValid() && sD != eD) {
+    if(sD && eD) {
+      let period = this.ds.getPeriod(sD, eD);
       this.subs.push(this.ts.getTimeByPeriod(this.as.getUser().id, sD.format('x'), eD.format('x'))
       .subscribe(res=> {
-        console.log('returned')
-        let period = this.ds.getPeriod(sD, eD);
-        console.log(period)
         period.days = this.ds.getTimeEntries(period.days, res);
-        console.log(period.days)
-        this.period = period;
-        this.dataSource = new MatTableDataSource(this.period.days);
-        this.cdr.detectChanges();
-        this.dataSource.paginator = this.paginator;
+        this.setPeriod(period);
       }, err=> {
-        console.log('returned')
+        this.setPeriod(period);
         console.log(err)
       }));
      }
   }
 
+  /* Gets codes used to display in form */
   getTimeCodes() {
     this.subs.push(this.ts.getTimeCodes()
     .subscribe(codes=> { this.codes = codes }, err => { console.log(err) }));
   }
 
-  /** Gets the total cost of all transactions. */
+  /* Gets the total cost of all transactions. */
   getTotalHours() {
     return this.period.days.map(d => d.totalTime).reduce((acc, value) => acc + value, 0);
   }
 
+  /* Adds columns to table */
   pushColumns(keys: string[]) {
     keys.forEach(key=> {
       let aIdx = this.displayedColumns.indexOf(key);
@@ -139,10 +137,18 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     });
   }
 
+  /* Removes columns from table */
   removeColumns(keys: string[]) {
     keys.forEach(key=> {
       let aIdx = this.displayedColumns.indexOf(key);
       if(aIdx > -1) this.displayedColumns.splice(aIdx, 1);
     });
+  }
+
+  setPeriod(period: any) {
+    this.period = period;
+    this.dataSource = new MatTableDataSource(this.period.days);
+    this.cdr.detectChanges();
+    this.dataSource.paginator = this.paginator;
   }
 }

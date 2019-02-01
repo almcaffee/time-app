@@ -7,6 +7,7 @@ export interface Day {
   day?: number;
   dateString?: string;
   moment?: any;
+  native?: Date;
   year?: number;
   time?: TimeEntry[];
   totalTime?: number;

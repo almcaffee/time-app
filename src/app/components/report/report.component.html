@@ -11,7 +11,7 @@
     </mat-card-header>
     <mat-card-content [formGroup]="reportForm">
       <mat-form-field>
-        <input matInput formControlName="startDate"
+        <input matInput formControlName="startDate" autocomplete="off"
         [min]="minDate"
         [max]="maxDate"
         [matDatepicker]="startDate"
@@ -22,7 +22,7 @@
         <mat-datepicker #startDate [touchUi]="ws.touchDevice && ws.smallScreen"></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput formControlName="endDate"
+        <input matInput formControlName="endDate" autocomplete="off"
           [min]="reportForm.controls.startDate.value"
           [max]="maxDate"
           [matDatepicker]="endDate"

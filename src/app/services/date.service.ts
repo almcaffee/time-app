@@ -4,7 +4,7 @@ import * as timezone from 'moment-timezone';
 import { Month, Day, Period, TimeEntry } from '../models';
 import { TimeService } from './time.service';
 import { AuthService } from './auth.service';
-import { Observable, Subscription, timer, of } from 'rxjs';
+import { Observable, Subject, Subscription, timer, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Injectable({
@@ -18,6 +18,9 @@ export class DateService {
   time: TimeEntry[];
   zone: string;
   subs: Subscription[];
+
+  dateClickedSub = new Subject<any>();
+  dateClickedSub$ = this.dateClickedSub.asObservable();
 
   constructor(private ts: TimeService, private as: AuthService) {
     this.period = [];
@@ -84,57 +87,45 @@ export class DateService {
     let startDayOfWeek = moment(startDate).day();
     let firstDayOfWeek = startDayOfWeek > 0 ? moment(startDate).subtract(startDayOfWeek, 'd') : moment(startDate);
     let numDays = numWeeks ? numWeeks*7 : 7;
-    for(let i = 0; i < numDays; i++) {
-      if(i === 0) { days[i] = this.populateDay(firstDayOfWeek); }
-      else { days[i] = this.populateDay(days[i - 1].moment.add(1, 'd')); }
-    };
-    return days;
+    return this.populateDays(firstDayOfWeek, numDays);
   }
 
   getCalendarMonth(startDate: any): Month {
     let ms = new Date(startDate).getTime();
-    let days: Day[] = [];
     let firstDayOfTheMonth = moment(ms).startOf('month');
     let lastDayOfTheMonth = moment(ms).endOf('month');
     let startDayOfMonth = firstDayOfTheMonth.day() > 0 ? moment(ms).startOf('month').subtract(firstDayOfTheMonth.day(), 'd') : moment(ms).startOf('month');
     let endDayOfTheMonth = lastDayOfTheMonth.day() < 6 ? moment(ms).endOf('month').add(6 - lastDayOfTheMonth.day(), 'd') : moment(ms).endOf('month');
-    let numDates = endDayOfTheMonth.diff(startDayOfMonth, 'days');
-    for(let i = 0; i <= numDates; i++) {
-      if(i === 0) { days[i] = this.populateDay(startDayOfMonth); }
-      else {
-        days[i] = this.populateDay(days[i - 1].moment.add(1, 'd'));
-      }
+    let numDates = endDayOfTheMonth.diff(startDayOfMonth, 'days') + 1;
+    let thisMonth = {
+      id: firstDayOfTheMonth.month()+1,
+      name: firstDayOfTheMonth.format('MMMM'),
+      days: this.populateDays(startDayOfMonth, numDates),
+      year: firstDayOfTheMonth.year()
     };
-    return { id: firstDayOfTheMonth.month()+1, name: firstDayOfTheMonth.format('MMMM'), days: days, year: firstDayOfTheMonth.year() };
+    thisMonth.days.map(d=> {
+      if(d.month !== thisMonth.id) d.editable = false;
+    });
+    return thisMonth;
   }
 
   getMonth(startDate: any): Month {
-    console.log(startDate)
-    let days: Day[] = [];
     let firstDayOfTheMonth = moment.isMoment(startDate) ? startDate.startOf('month') : moment(startDate).startOf('month');
     let lastDayOfTheMonth = moment.isMoment(startDate) ? startDate.endOf('month') : moment(startDate).endOf('month');
-    let numDates = lastDayOfTheMonth.diff(firstDayOfTheMonth, 'days');
-    for(let i = 0; i <= numDates; i++) {
-      if(i === 0) { days[i] = this.populateDay(firstDayOfTheMonth); }
-      else {
-        days[i] = this.populateDay(days[i - 1].moment.add(1, 'd'));
-      }
-    };
-    return { id: firstDayOfTheMonth.month()+1, name: firstDayOfTheMonth.format('MMMM'), days: days, year: firstDayOfTheMonth.year() }
+    let numDates = lastDayOfTheMonth.diff(firstDayOfTheMonth, 'days') + 1;
+    return {
+      id: firstDayOfTheMonth.month()+1,
+      name: firstDayOfTheMonth.format('MMMM'),
+      days: this.populateDays(firstDayOfTheMonth, numDates),
+      year: firstDayOfTheMonth.year()
+    }
   }
 
   getPeriod(startDate: any, endDate: any): Period {
-    let days: Day[] = [];
     let firstDay = moment.isMoment(startDate) ? startDate : moment(startDate);
     let lastDay = moment.isMoment(endDate) ? endDate : moment(endDate);
-    let numDates = lastDay.diff(firstDay, 'days');
-    for(let i = 0; i <= numDates; i++) {
-      if(i === 0) { days[i] = this.populateDay(firstDay); }
-      else {
-        days[i] = this.populateDay(days[i - 1].moment.add(1, 'd'));
-      }
-    };
-    return { startDate: firstDay, endDate: lastDay, days: days };
+    let numDates = lastDay.diff(firstDay, 'days') + 1;
+    return { startDate: firstDay, endDate: lastDay, days: this.populateDays(firstDay, numDates) };
   }
 
   isValid(value: any): boolean {
@@ -151,22 +142,38 @@ export class DateService {
     return new Date(value.milliseconds());
   }
 
-  populateDay(day: any): Day {
-    let mo = day.month() + 1;
-    let yr = day.year();
-    let ds = yr.toString()+'-'+mo.toString()+'-'+day.date().toString();
+  populateDay(day: any, editable?: boolean): Day {
     return {
       id: day.day() + 1,
       month: day.month() + 1,
       name: day.format('dddd'),
       day: day.date(),
       dateString: day.format("YYYY-MM-DD"),
-      moment: moment(ds, "YYYY-MM-DD"),
+      moment: day,
       year: day.year(),
       time: [],
       totalTime: 0,
-      editable: true
+      editable: editable ? editable : true
     };
+  }
+
+  populateDays(first: any, numDays: number): Day[] {
+    let days: Day[] = [];
+    for(let i = 0; i < numDays; i++) {
+      if(i === 0) {
+        days[i] = this.populateDay(first);
+      } else {
+        let dd = first.valueOf() + (1000 * 60 * 60 * 24 * i);
+        // Take into account daylight savings time
+        days[i] = moment(dd).isDST() ? this.populateDay(moment(dd - (1000 * 60 * 60 * 24))) : this.populateDay(moment(dd));
+      }
+    };
+    return days;
+  }
+
+  setActiveDay(day: Day) {
+    console.log(day);
+    this.dateClickedSub.next(day);
   }
 
   today(): Day {

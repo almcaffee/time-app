@@ -19,13 +19,16 @@
     </mat-card-header>
     <mat-card-content>
       <div class="days">
-        <div *ngFor="let day of month.days" class="day" [class.today]="isToday(day,today)" [class.disabled]="day.month != month.id">
+        <div *ngFor="let day of month.days" class="day" [class.today]="isToday(day,today)" [class.disabled]="day.month !== month.id" (click)="day.month === month.id ? ds.setActiveDay(day) : null">
           <div class="name">
             <span>{{ day.name | day:this.ws.mobile }}</span>
           </div>
           <div class="date">
             <span>{{ day.day }}</span>
           </div>
+          <span *ngIf="day.time.length" class="icon">
+            <mat-icon>access_time</mat-icon>
+          </span>
         </div>
       </div>
     </mat-card-content>
