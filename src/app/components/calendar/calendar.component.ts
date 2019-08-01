@@ -3,6 +3,7 @@ import { TimeService } from '@services/time.service';
 import { DateService }  from '@services/date.service';
 import { AuthService }  from '@services/auth.service';
 import { WindowService } from '@services/window.service';
+import { DialogService } from '@services/dialog.service';
 import { Observable, Subscription } from 'rxjs';
 import { Month, Day, Profile } from '@models';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
@@ -27,6 +28,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(private ts: TimeService,
     private ds: DateService,
     private as: AuthService,
+    public dls: DialogService,
     public ws: WindowService) {
     this.today = this.ds.today();
     this.profile = this.as.getUser();
@@ -83,5 +85,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.month = month;
       console.log(err);
     }));
+  }
+
+  setActiveDay(day: any) {
+    this.ds.setActiveDay(day);
+    this.dls.openDialog('day');
   }
 }

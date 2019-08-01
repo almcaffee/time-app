@@ -5,6 +5,7 @@ import { CalendarComponent } from '@components/calendar/calendar.component';
 import { LoginGuard } from '@guards/login.guard';
 import { ProfileComponent } from '@components/profile/profile.component';
 import { ReportComponent } from '@components/report/report.component';
+import { TimeComponent } from '@components/time/time.component';
 
 export const AppRoutes: Routes = [
   {
@@ -53,6 +54,11 @@ export const AppRoutes: Routes = [
   {
     path: 'report',
     component: ReportComponent,
+    canActivate: [LoginGuard]
+  },
+  {
+    path: 'timesheet',
+    component: TimeComponent,
     canActivate: [LoginGuard]
   },
   {

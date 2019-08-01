@@ -18,6 +18,7 @@ export class DateService {
   time: TimeEntry[];
   zone: string;
   subs: Subscription[];
+  day: any;
 
   dateClickedSub = new Subject<any>();
   dateClickedSub$ = this.dateClickedSub.asObservable();
@@ -173,7 +174,8 @@ export class DateService {
 
   setActiveDay(day: Day) {
     console.log(day);
-    this.dateClickedSub.next(day);
+    this.day = day;
+    this.dateClickedSub.next(this.day);
   }
 
   today(): Day {

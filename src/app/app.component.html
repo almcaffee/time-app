@@ -1,13 +1,14 @@
 <ng-container *ngIf="_authCheck">
-  <nav *ngIf="_auth">
-    <app-navigation></app-navigation>
-  </nav>
-  <div class="app-body">
-    <div *ngIf="_auth && !ws.mobile" class="app-menu">
-      <app-menu></app-menu>
+    <nav *ngIf="_auth">
+        <app-navigation></app-navigation>
+    </nav>
+    <div class="app-body">
+        <div *ngIf="_auth && !ws.mobile" class="app-menu">
+            <app-menu></app-menu>
+        </div>
+        <div class="app-content">
+            <router-outlet></router-outlet>
+        </div>
     </div>
-    <div class="app-content">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+    <!-- <app-dialog></app-dialog> -->
 </ng-container>

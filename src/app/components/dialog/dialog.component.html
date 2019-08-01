@@ -1,21 +1,9 @@
-
+<!-- <app-time-entry *ngIf="data.dialogueType === 'time'"></app-time-entry> -->
 <h2 mat-dialog-title>Title</h2>
-<mat-dialog-content [class.error]="data.dialogueType === 'error'">
-  <div *ngIf="data.dialogueType === 'photo' && photoForm" [formGroup]="photoForm" class="dialog-form">
-    <mat-form-field>
-      <input matInput type="file">
-      <mat-label>Select Photo</mat-label>
-    </mat-form-field>
-  </div>
-  <div *ngIf="data.dialogueType === 'time' && timeForm" [formGroup]="timeForm" class="dialog-form">
-    <mat-form-field *ngFor="let code of codes" class="dialog-compact">
-      <input matInput>
-      <mat-select>
-        <option>X</option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+<mat-dialog-content [class.error]="dialogError">
+    <app-time-entry [date]="this.ds.day"></app-time-entry>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button  mat-raised-button [disableRipple]="true" [disabled]="disableSubmit" color="primary">Save</button>
+    <button mat-raised-button [disableRipple]="true" [disabled]="disableSubmit" color="primary">Continue</button>
+    <button mat-raised-button [disableRipple]="true" color="secondary" (click)="_dls.closeDialog({ args: { a: 0, b: 1}})">Cancel</button>
 </mat-dialog-actions>

@@ -48,4 +48,8 @@ export class TimeService {
     return this.http.get<any>(this.API_URL+'department/id/'+id);
   }
 
+  setTimeByDate(entry: TimeEntry): Observable<any> {
+    return this.http.post<any>(this.API_URL+'/time', entry);
+  }
+
 }

@@ -27,5 +27,5 @@ export const AppDeclarations: any[] = [
 ];
 
 export const EntryComponents: any[] = [
-
+  DialogComponent
 ];
