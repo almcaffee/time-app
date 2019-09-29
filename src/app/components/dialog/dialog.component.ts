@@ -25,6 +25,7 @@ export class DialogComponent implements OnInit, OnDestroy {
     public ws: WindowService) {
       this.data = data;
       console.log(this.data);
+      console.log(ds.day)
   }
 
   ngOnInit() {

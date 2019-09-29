@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TimeService } from '@services/time.service';
 import { DateService }  from '@services/date.service';
 import { AuthService }  from '@services/auth.service';
@@ -14,7 +14,7 @@ import { DialogService } from '@services/dialog.service';
   templateUrl: './time-entry.component.html',
   styleUrls: ['./time-entry.component.scss']
 })
-export class TimeEntryComponent implements OnInit, OnDestroy {
+export class TimeEntryComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() date: any;
   timeForm: FormGroup;
@@ -33,9 +33,28 @@ export class TimeEntryComponent implements OnInit, OnDestroy {
     this.setupForm();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['date'].currentValue && changes['date'].currentValue !== changes['date'].previousValue) {
+      console.log(this.date)
+      this.populateForm();
+    }
+  }
+
   ngOnDestroy() {
     this.subs.forEach(s => s.unsubscribe());
     this.timeForm = null;
+  }
+
+  populateForm() {
+    if (this.date && this.date.totalTime && this.timeForm) {
+      const timeArr = this.date.totalTime.toString().split('.');
+      const hhControl = this.timeForm.get('hh');
+      hhControl.patchValue(parseInt(timeArr[0]));
+      if (timeArr[1]) {
+        const mmControl = this.timeForm.get('mm');
+        mmControl.patchValue((parseInt(timeArr[1])*.6).toPrecision(2));
+      }
+    }
   }
 
   saveTime(entry: TimeEntry) {
@@ -50,11 +69,12 @@ export class TimeEntryComponent implements OnInit, OnDestroy {
       mm: new FormControl(null, [Validators.minLength(1), Validators.maxLength(2), Validators.pattern(/[0-9]/)]),
       timeCode: new FormControl(null, [Validators.required, Validators.maxLength(3), Validators.minLength(3)])
     });
+    this.populateForm();
     this.subs.push(this.timeForm.valueChanges.subscribe(value => {
-      if(this.timeForm.valid) {
+      if (this.timeForm.valid) {
         this.saveTime(this.setUpTimeEntry(value));
       } else {
-        console.log(this.timeForm)
+        console.log(this.timeForm);
         console.log('invalid');
       }
     }));
@@ -68,11 +88,11 @@ export class TimeEntryComponent implements OnInit, OnDestroy {
     this.timeForm.patchValue({ hh: hh, mm: mm, timeCode: res.timeCode });
   }
 
-  setUpTimeEntry(data): TimeEntry {
+  setUpTimeEntry(data: any): TimeEntry {
     return {
       date: this.date,
       timeCode: data.timeCode,
-      hours: data.hh+data.mm/60,
+      hours: data.hh + (data.mm / 60),
       profileId: this.user.id,
       updaterId: this.user.id
     };

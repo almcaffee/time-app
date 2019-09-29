@@ -1,10 +1,10 @@
 <div *ngIf="timeForm && date" [formGroup]="timeForm" class="dialog-form">
     <mat-form-field formControlName="hh" class="dialog-compact" ngDefaultControl>
-        <input matInput placeholder="HH">
-        <mat-error *ngIf="this.timeForm.controls['hh']invalid">Error</mat-error>
+        <input matInput placeholder="HH" [value]="timeForm.controls.hh.value">
+        <mat-error *ngIf="timeForm.controls['hh'].invalid">Error</mat-error>
     </mat-form-field>
     <mat-form-field formControlName="mm" class="dialog-compact" ngDefaultControl>
-        <input matInput placeholder="MM">
-        <mat-error *ngIf="this.timeForm.controls['mm']invalid">Error</mat-error>
+        <input matInput placeholder="MM" [value]="timeForm.controls.mm.value">
+        <mat-error *ngIf="timeForm.controls['mm'].invalid">Error</mat-error>
     </mat-form-field>
 </div>

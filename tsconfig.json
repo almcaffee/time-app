@@ -12,7 +12,8 @@
       "@environments/*": ["src/environments/*"],
       "@scss/*": ["src/assets/scss/*"],
       "@css/*": ["src/assets/css/*"],
-      "@images/*": ["src/assets/images/*"]
+      "@images/*": ["src/assets/images/*"],
+      "@utils/*": ["src/app/core/utils/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
