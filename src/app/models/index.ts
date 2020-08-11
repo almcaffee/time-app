@@ -1,5 +1,6 @@
 export { Day } from './day';
 export { DateSelection } from './date-selection';
+export { Department } from './department';
 export { ErrorResponse } from './error-response';
 export { Group } from './group';
 export { LocationCriteria } from './location-criteria';
